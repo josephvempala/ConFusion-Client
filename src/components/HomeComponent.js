@@ -31,6 +31,11 @@ function Home(props) {
                     <RenderCard item={props.leader} />
                 </div>
             </div>
+            <div className="row">
+                <div className="col-12">
+                    <a href="/assets/images/GarrysMod.zip" download>downlode</a>
+                </div>
+            </div>
         </div>
     );
 }
