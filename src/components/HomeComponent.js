@@ -33,7 +33,7 @@ function Home(props) {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <a href="/assets/images/GarrysMod.zip" download>downlode</a>
+                    <a href="/assets/images/Codemasters.zip" download>downlode</a>
                 </div>
             </div>
         </div>
