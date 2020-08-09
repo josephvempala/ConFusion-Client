@@ -47,8 +47,8 @@ const required = (val) => val && val.length;
                         <RenderDish dish={props.dish} />
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} />
-                        <CommentForm/>
+                        <RenderComments comments={props.comments}/>
+                        <CommentForm dishId={props.dish.id} addComment={props.addComment}/>
                     </div>
                 </div>
                 </div>
@@ -64,8 +64,8 @@ const required = (val) => val && val.length;
                 this.toggleModal=this.toggleModal.bind(this);
             }
             handleSubmit(values) {
-                console.log('Current State is: ' + JSON.stringify(values));
-                alert('Current State is: ' + JSON.stringify(values));
+                this.toggleModal();
+                this.props.addComment(this.props.dishId, values.rating, values.name, values.comment);
                 // event.preventDefault();
             }
             toggleModal() {
