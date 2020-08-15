@@ -70,7 +70,7 @@ const required = (val) => val && val.length;
                                 </div>
                                 <div className="col-12 col-md-5 m-1">
                                     <RenderComments comments={props.comments}/>
-                                    <CommentForm dishId={props.dish.id} addComment={props.addComment} postComment={props.postComment}/>
+                                    <CommentForm dishId={props.dish.id} postComment={props.postComment}/>
                                 </div>
                             </div>
                             </div>
