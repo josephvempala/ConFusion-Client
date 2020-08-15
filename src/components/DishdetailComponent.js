@@ -7,7 +7,7 @@ import {baseUrl} from '../shared/baseUrl'
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const required = (val) => val && val.length;
-    function RenderComments({comments}){
+    function RenderComments({comments, postComment, dishId}){
         const comment=comments.map((com) =>{
             return(
                 <ul key={com.id} className="list-unstyled">
@@ -70,7 +70,7 @@ const required = (val) => val && val.length;
                                 </div>
                                 <div className="col-12 col-md-5 m-1">
                                     <RenderComments comments={props.comments}/>
-                                    <CommentForm dishId={props.dish.id} addComment={props.addComment}/>
+                                    <CommentForm dishId={props.dish.id} addComment={props.addComment} postComment={props.postComment}/>
                                 </div>
                             </div>
                             </div>
@@ -94,7 +94,7 @@ const required = (val) => val && val.length;
             }
             handleSubmit(values) {
                 this.toggleModal();
-                this.props.addComment(this.props.dishId, values.rating, values.name, values.comment);
+                this.props.postComment(this.props.dishId, values.rating, values.name, values.comment);
                 // event.preventDefault();
             }
             toggleModal() {
