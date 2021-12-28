@@ -6,7 +6,7 @@ import {LeaderList} from './LeaderList';
 function About(props) {
     return (
         <div className="container">
-            <div className="row mt-5">
+            <div className="row mt-3">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
                     <BreadcrumbItem active>About Us</BreadcrumbItem>

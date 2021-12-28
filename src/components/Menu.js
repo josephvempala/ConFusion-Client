@@ -45,8 +45,8 @@ const Menu = (props) => {
         );
     } else
         return (
-            <div className="container mt-3">
-                <div className="row">
+            <div className="container">
+                <div className="row mt-3">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
                         <BreadcrumbItem active>Menu</BreadcrumbItem>

@@ -112,7 +112,7 @@ class Main extends Component {
         );
 
         return (
-            <div>
+            <div className="full-viewport">
                 <Header auth={this.props.auth}
                         loginUser={this.props.loginUser}
                         logoutUser={this.props.logoutUser}

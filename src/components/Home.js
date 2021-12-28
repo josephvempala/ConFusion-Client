@@ -15,7 +15,7 @@ function RenderCard({item, isLoading, errMess}) {
         );
     } else
         return (
-            <FadeTransform className="mt-5 mb-5" in
+            <FadeTransform className="mt-3" in
                            transformProps={{
                                exitTransform: 'scale(0.5) translateY(-50%)'
                            }}>

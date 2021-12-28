@@ -51,7 +51,7 @@ const Favorites = (props) => {
 
         return (
             <div className="container">
-                <div className="row">
+                <div className="row mt-3">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
                         <BreadcrumbItem active>My Favorites</BreadcrumbItem>
@@ -62,9 +62,15 @@ const Favorites = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <Media list>
-                        {favorites}
-                    </Media>
+                    {favorites.length > 0 ?
+                        <Media list>
+                            {favorites}
+                        </Media>
+                        :
+                        <div className="col-3 col-sm-12 mt-3 mb-3">
+                            <h3>You have no favourites</h3>  
+                        </div>
+                    }
                 </div>
             </div>
         );
