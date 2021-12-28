@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import Home from './HomeComponent';
-import About from './AboutComponent';
-import Menu from './MenuComponent';
-import Contact from './ContactComponent';
-import DishDetail from './DishdetailComponent';
-import Favorites from './FavoriteComponent';
-import Header from './HeaderComponent';
-import Footer from './FooterComponent';
+import Home from './Home';
+import About from './About';
+import Menu from './Menu';
+import Contact from './Contact';
+import DishDetail from './Dishdetail';
+import Favorites from './Favorite';
+import Header from './Header';
+import Footer from './Footer';
 import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
@@ -90,24 +90,12 @@ class Main extends Component {
             return (
                 this.props.auth.isAuthenticated
                     ?
-                    <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
-                                isLoading={this.props.dishes.isLoading}
-                                errMess={this.props.dishes.errMess}
-                                comments={this.props.comments.comments.filter((comment) => comment.dish === match.params.dishId)}
-                                commentsErrMess={this.props.comments.errMess}
-                                postComment={this.props.postComment}
-                                favorite={this.props.favorites.favorites.dishes.some((dish) => dish._id === match.params.dishId)}
-                                postFavorite={this.props.postFavorite}
+                    <DishDetail 
+                        dishId={match.params.dishId}
                     />
                     :
-                    <DishDetail dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
-                                isLoading={this.props.dishes.isLoading}
-                                errMess={this.props.dishes.errMess}
-                                comments={this.props.comments.comments.filter((comment) => comment.dish === match.params.dishId)}
-                                commentsErrMess={this.props.comments.errMess}
-                                postComment={this.props.postComment}
-                                favorite={false}
-                                postFavorite={this.props.postFavorite}
+                    <DishDetail 
+                        dishId={match.params.dishId}
                     />
             );
         }

@@ -18,13 +18,21 @@ import {
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Control, LocalForm} from 'react-redux-form';
-import {Loading} from './LoadingComponent';
+import {Loading} from './Loading';
 import {baseUrl} from '../shared/baseUrl';
 import {Fade, FadeTransform, Stagger} from 'react-animation-components';
+import {connect} from 'react-redux';
+import {
+    fetchComments,
+    fetchDishes,
+    postComment,
+    fetchFavorites,
+    postFavorite
+} from '../redux/ActionCreators';
 
 function RenderDish({dish, favorite, postFavorite}) {
     return (
-        <div className="col-12 col-md-5 m-1">
+        <div className="col-12 col-md-5 mt-1">
             <FadeTransform in
                            transformProps={{
                                exitTransform: 'scale(0.5) translateY(-50%)'
@@ -84,6 +92,24 @@ function RenderComments({comments, postComment, dishId}) {
             <div/>
         );
 }
+
+const mapStateToProps = (state) => ({
+    dishes: state.dishes,
+    comments: state.comments,
+    favorites: state.favorites,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    postComment: (dishId, rating, comment) => dispatch(postComment(dishId, rating, comment)),
+    fetchDishes: () => {
+        dispatch(fetchDishes())
+    },
+    fetchComments: () => {
+        dispatch(fetchComments())
+    },
+    fetchFavorites: () => dispatch(fetchFavorites()),
+    postFavorite: (dishId) => dispatch(postFavorite(dishId)),
+});
 
 class CommentForm extends Component {
 
@@ -151,7 +177,9 @@ class CommentForm extends Component {
 }
 
 const DishDetail = (props) => {
-    if (props.isLoading) {
+    const dish = props.dishes.dishes.filter(x => x._id === props.dishId)[0];
+    const favourite = props.favorites.favorites?.dishes.some((dish) => dish._id === props.dishId)
+    if (props.dishes.isLoading) {
         return (
             <div className="container">
                 <div className="row">
@@ -159,7 +187,7 @@ const DishDetail = (props) => {
                 </div>
             </div>
         );
-    } else if (props.errMess) {
+    } else if (props.dishes.errMess) {
         return (
             <div className="container">
                 <div className="row">
@@ -167,24 +195,24 @@ const DishDetail = (props) => {
                 </div>
             </div>
         );
-    } else if (props.dish != null)
+    } else if (dish != null)
         return (
             <div className="container">
-                <div className="row">
+                <div className="row mt-5">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.dish.name}</h3>
+                        <h3>{dish.name}</h3>
                         <hr/>
                     </div>
                 </div>
                 <div className="row">
-                    <RenderDish dish={props.dish} favorite={props.favorite} postFavorite={props.postFavorite}/>
-                    <RenderComments comments={props.comments}
+                    <RenderDish dish={dish} favorite={favourite} postFavorite={props.postFavorite}/>
+                    <RenderComments comments={props.comments.comments.filter(x=>x.dish === props.dishId)}
                                     postComment={props.postComment}
-                                    dishId={props.dish._id}/>
+                                    dishId={dish._id}/>
                 </div>
             </div>
         );
@@ -194,4 +222,4 @@ const DishDetail = (props) => {
         );
 }
 
-export default DishDetail;
+export default connect(mapStateToProps, mapDispatchToProps)(DishDetail);

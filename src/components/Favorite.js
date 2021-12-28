@@ -2,7 +2,7 @@ import React from 'react';
 import {Breadcrumb, BreadcrumbItem, Button, Media} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {baseUrl} from '../shared/baseUrl';
-import {Loading} from './LoadingComponent';
+import {Loading} from './Loading';
 
 function RenderMenuItem({dish, deleteFavorite}) {
     return (
