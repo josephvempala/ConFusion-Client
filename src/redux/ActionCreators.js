@@ -236,7 +236,6 @@ export const loginError = (message) => {
 }
 
 export const loginUser = (creds) => (dispatch) => {
-    // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(creds))
 
     return fetch(baseUrl + 'users/login', {
@@ -261,10 +260,8 @@ export const loginUser = (creds) => (dispatch) => {
         .then(response => response.json())
         .then(response => {
             if (response.success) {
-                // If login was successful, set the token in local storage
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('creds', JSON.stringify(creds));
-                // Dispatch the success action
                 dispatch(fetchFavorites());
                 dispatch(receiveLogin(response));
             } else {
