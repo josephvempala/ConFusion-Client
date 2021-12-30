@@ -43,7 +43,7 @@ export function LeaderList(props) {
         );
     } else {
         return (
-            <div className="mt-3">
+            <div className="m-3">
                 <Media list>
                     <Stagger in>
                         {leaders}

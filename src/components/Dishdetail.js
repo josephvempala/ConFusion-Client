@@ -198,7 +198,7 @@ const DishDetail = (props) => {
     } else if (dish != null)
         return (
             <div className="container">
-                <div className="row mt-5">
+                <div className="row m-5">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{dish.name}</BreadcrumbItem>

@@ -25,7 +25,7 @@ class Contact extends Component {
     render() {
         return (
             <div className="container">
-                <div className="row mt-3">
+                <div className="row m-3">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
                         <BreadcrumbItem active>Contact Us</BreadcrumbItem>
