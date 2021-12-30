@@ -14,7 +14,10 @@
     border-bottom: 1px ridge;
     min-height: 400px;
 }
-
+.removeTextDecor, .removeTextDecor :hover{
+    text-decoration: none;
+    color: initial;
+}
 .footer {
     width:100%;
     position: relative;

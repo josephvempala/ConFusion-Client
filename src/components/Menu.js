@@ -1,19 +1,27 @@
 import React from 'react';
-import {Breadcrumb, BreadcrumbItem, Card, CardImg, CardImgOverlay, CardTitle} from 'reactstrap';
-import {Link} from 'react-router-dom';
-import {Loading} from './Loading';
-import {baseUrl} from '../shared/baseUrl';
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Loading } from './Loading';
+import { baseUrl } from '../shared/baseUrl';
 
-function RenderMenuItem({dish}) {
+function RenderMenuItem({ dish }) {
     return (
-        <Card>
-            <Link to={`/menu/${dish._id}`}>
-                <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name}/>
-                <CardImgOverlay>
-                    <CardTitle>{dish.name}</CardTitle>
-                </CardImgOverlay>
+        <div className="card mb-3" style={{"max-width": "640px"}}>
+            <Link className="removeTextDecor" to={`menu/${dish._id}`}>
+                <div className="row no-gutters">
+                    <div className="col-md-4">
+                        <img className="m-1" src={baseUrl + dish.image} alt={dish.name} />
+                    </div>
+                    <div className="col-md-8">
+                        <div className="card-body">
+                            <h5 className="card-title">{dish.name}</h5>
+                            <p className="card-text">{dish.description}</p>
+                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
             </Link>
-        </Card>
+        </div>
     );
 }
 
@@ -22,7 +30,7 @@ const Menu = (props) => {
     const menu = props.dishes.dishes.map((dish) => {
         return (
             <div key={dish._id} className="col-12 col-md-5 m-1">
-                <RenderMenuItem dish={dish}/>
+                <RenderMenuItem dish={dish} />
             </div>
         );
     });
@@ -31,7 +39,7 @@ const Menu = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    <Loading/>
+                    <Loading />
                 </div>
             </div>
         );
@@ -53,7 +61,7 @@ const Menu = (props) => {
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>Menu</h3>
-                        <hr/>
+                        <hr />
                     </div>
                 </div>
                 <div className="row">
