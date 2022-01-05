@@ -229,6 +229,7 @@ export const receiveLogin = (response) => {
 }
 
 export const loginError = (message) => {
+    alert(message)
     return {
         type: ActionTypes.LOGIN_FAILURE,
         message
@@ -249,9 +250,11 @@ export const loginUser = (creds) => (dispatch) => {
                 if (response.ok) {
                     return response;
                 } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
+                    return response.json().then((resp) => {
+                        const error = new Error('Error ' + resp.err.message);
+                        error.response = response;
+                        throw error;
+                    })
                 }
             },
             error => {
@@ -413,6 +416,7 @@ export const receiveRegister = () => {
 }
 
 export const registerError = (message) => {
+    alert(message);
     return {
         type: ActionTypes.REGISTER_FAILURE,
         message
@@ -432,9 +436,11 @@ export const registerUser = (creds) => (dispatch) => {
                 if (response.ok) {
                     return response;
                 } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
+                    return response.json().then((resp) => {
+                        const error = new Error('Error ' + resp.err.message);
+                        error.response = response;
+                        throw error;
+                    })
                 }
             },
             error => {

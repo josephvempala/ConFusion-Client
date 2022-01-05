@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
     Button,
     Collapse,
@@ -17,181 +17,183 @@ import {
 } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 
-class Header extends Component {
+function Header({registerUser, loginUser, logoutUser, auth}) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            isNavOpen: false,
-            isModalOpen: false,
-            isRegisterModalOpen: false
-        };
-        this.toggleNav = this.toggleNav.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
-        this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
-        this.handleRegister = this.handleRegister.bind(this);
-    }
+    const [isNavOpen, setIsNavOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+    const [loginForm, setLoginForm] = useState({});
+    const [registerForm, setRegisterForm] = useState({});
 
-    toggleNav() {
-        this.setState({
-            isNavOpen: !this.state.isNavOpen
+    const handleLoginFormInputChange = (event) => {
+        const target = event.target;
+        const name = target.name;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        setLoginForm({
+            ...loginForm,
+            [name]:value
         });
     }
 
-    toggleModal() {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
+    const handleRegisterFormInputChange = (event) => {
+        const target = event.target;
+        const name = target.name;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        setRegisterForm({
+            ...registerForm,
+            [name]:value
+        })
     }
 
-    toggleRegisterModal(event) {
-        this.setState({
-            isRegisterModalOpen: !this.state.isRegisterModalOpen
-        });
+    const toggleNav = () => {
+        setIsNavOpen(!isNavOpen);
     }
 
-    handleRegister(event) {
-        this.toggleRegisterModal();
-        this.props.registerUser({username: this.username.value, password: this.password.value, firstname: this.firstname.value, lastname:this.lastname.value});
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    }
+
+    const toggleRegisterModal = () => {
+        setIsRegisterModalOpen(!isRegisterModalOpen);
+    }
+
+    const handleRegister = (event) => {
+        toggleRegisterModal();
+        registerUser(registerForm);
         event.preventDefault();
     }
 
-    handleLogin(event) {
-        this.toggleModal();
-        this.props.loginUser({username: this.username.value, password: this.password.value});
+    const handleLogin = (event) => {
+        toggleModal();
+        loginUser(loginForm);
         event.preventDefault();
     }
 
-    handleLogout() {
-        this.props.logoutUser();
+    const handleLogout = () => {
+        logoutUser();
     }
 
-    render() {
-        return (
-            <>
-                <Navbar dark expand="md">
-                    <Container>
-                        <NavbarToggler aria-label="navbar" onClick={this.toggleNav}/>
-                        <Collapse isOpen={this.state.isNavOpen} navbar>
-                            <Nav navbar>
+    return (
+        <>
+            <Navbar dark expand="md">
+                <Container>
+                    <NavbarToggler aria-label="navbar" onClick={toggleNav}/>
+                    <Collapse isOpen={isNavOpen} navbar>
+                        <Nav navbar>
+                            <NavItem>
+                                <NavLink className="nav-link" to="/home">
+                                    <span className="fa fa-home fa-lg"/> Home
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink className="nav-link" to="/aboutus">
+                                    <span className="fa fa-info fa-lg"/> About
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink className="nav-link" to="/menu">
+                                    <span className="fa fa-list fa-lg"/> Menu
+                                </NavLink>
+                            </NavItem>
+                            {auth.isAuthenticated &&
                                 <NavItem>
-                                    <NavLink className="nav-link" to="/home">
-                                        <span className="fa fa-home fa-lg"/> Home
+                                    <NavLink className="nav-link" to="/favorites">
+                                        <span className="fa fa-heart fa-lg"/> Favorites
                                     </NavLink>
                                 </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/aboutus">
-                                        <span className="fa fa-info fa-lg"/> About
-                                    </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/menu">
-                                        <span className="fa fa-list fa-lg"/> Menu
-                                    </NavLink>
-                                </NavItem>
-                                {this.props.auth.isAuthenticated &&
-                                    <NavItem>
-                                        <NavLink className="nav-link" to="/favorites">
-                                            <span className="fa fa-heart fa-lg"/> Favorites
-                                        </NavLink>
-                                    </NavItem>
-                                }
-                                <NavItem>
-                                    <NavLink className="nav-link" to="/contactus">
-                                        <span className="fa fa-address-card fa-lg"/> Contact
-                                    </NavLink>
-                                </NavItem>
-                            </Nav>
-                            <Nav className="ml-auto" navbar>
-                                <NavItem>
-                                    {!this.props.auth.isAuthenticated ?
-                                        <Button className="loginbtn" outline onClick={this.toggleModal}>
-                                            <span className="fa fa-sign-in fa-lg"/> Login
-                                            {this.props.auth.isFetching ?
+                            }
+                            <NavItem>
+                                <NavLink className="nav-link" to="/contactus">
+                                    <span className="fa fa-address-card fa-lg"/> Contact
+                                </NavLink>
+                            </NavItem>
+                        </Nav>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                {!auth.isAuthenticated ?
+                                    <Button className="loginbtn" outline onClick={toggleModal}>
+                                        <span className="fa fa-sign-in fa-lg"/> Login
+                                        {auth.isFetching ?
+                                            <span className="fa fa-spinner fa-pulse fa-fw"/>
+                                            : null
+                                        }
+                                    </Button>
+                                    :
+                                    <div>
+                                        <div className="navbar-text mr-3">{auth.user.username}</div>
+                                        <Button className="loginbtn" outline onClick={handleLogout}>
+                                            <span className="fa fa-sign-out fa-lg"/> Logout
+                                            {auth.isFetching ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"/>
                                                 : null
                                             }
                                         </Button>
-                                        :
-                                        <div>
-                                            <div className="navbar-text mr-3">{this.props.auth.user.username}</div>
-                                            <Button className="loginbtn" outline onClick={this.handleLogout}>
-                                                <span className="fa fa-sign-out fa-lg"/> Logout
-                                                {this.props.auth.isFetching ?
-                                                    <span className="fa fa-spinner fa-pulse fa-fw"/>
-                                                    : null
-                                                }
-                                            </Button>
-                                        </div>
-                                    }
+                                    </div>
+                                }
 
-                                </NavItem>
-                            </Nav>
-                        </Collapse>
-                    </Container>
-                </Navbar>
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
-                    <ModalBody>
-                        <Form onSubmit={this.handleLogin}>
-                            <FormGroup>
-                                <Label htmlFor="username">Username</Label>
-                                <Input type="text" id="username" name="username"
-                                       innerRef={(input) => this.username = input}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="password">Password</Label>
-                                <Input type="password" id="password" name="password"
-                                       innerRef={(input) => this.password = input}/>
-                            </FormGroup>
-                            <FormGroup className="d-flex" check>
-                                <Label check>
-                                    <Input type="checkbox" name="remember"
-                                           innerRef={(input) => this.remember = input}/>
-                                    Remember me
-                                </Label>
-                                <Label className="ml-auto align-self-center" htmlFor="register">If its your first time here </Label>
-                                <Button className="ml-auto " onClick={this.toggleRegisterModal} id="register" type="button" value="register" color="primary">Register</Button>
-                            </FormGroup>
-                            <FormGroup>
-                                <Button type="submit" value="submit" color="primary">Login</Button>
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                </Modal>
-                <Modal isOpen={this.state.isRegisterModalOpen} toggle={this.toggleRegisterModal}>
-                    <ModalHeader toggle={this.toggleRegisterModal}>Login</ModalHeader>
-                    <ModalBody>
-                        <Form onSubmit={this.handleRegister}>
-                            <FormGroup>
-                                <Label htmlFor="username">Username</Label>
-                                <Input type="text" id="username" name="username"
-                                       innerRef={(input) => this.username = input}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="password">Password</Label>
-                                <Input type="password" id="password" name="password"
-                                       innerRef={(input) => this.password = input}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="firstname">First Name</Label>
-                                <Input type="text" id="firstname" name="firstname"
-                                       innerRef={(input) => this.firstname = input}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="lastname">Last Name</Label>
-                                <Input type="lastname" id="lastname" name="lastname"
-                                       innerRef={(input) => this.lastname = input}/>
-                            </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Register</Button>
-                        </Form>
-                    </ModalBody>
-                </Modal>
-            </>
-        );
-    }
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
+                </Container>
+            </Navbar>
+            <Modal isOpen={isModalOpen} toggle={toggleModal}>
+                <ModalHeader toggle={toggleModal}>Login</ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={handleLogin}>
+                        <FormGroup>
+                            <Label htmlFor="username">Username</Label>
+                            <Input type="text" id="username" name="username"
+                                    onChange={handleLoginFormInputChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="password">Password</Label>
+                            <Input type="password" id="password" name="password"
+                                    onChange={handleLoginFormInputChange}/>
+                        </FormGroup>
+                        <FormGroup check>
+                            <Label check>
+                                <Input type="checkbox" name="remember"
+                                    onChange={handleLoginFormInputChange}/>
+                                Remember me
+                            </Label>
+                        </FormGroup>
+                        <FormGroup className="d-flex">
+                            <Button type="submit" value="submit" color="primary">Login</Button>
+                            <Button className="ml-auto " onClick={toggleRegisterModal} id="register" type="button" value="register" color="primary">Register</Button>
+                        </FormGroup>
+                    </Form>
+                </ModalBody>
+            </Modal>
+            <Modal isOpen={isRegisterModalOpen} toggle={toggleRegisterModal}>
+                <ModalHeader toggle={toggleRegisterModal}>Login</ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={handleRegister}>
+                        <FormGroup>
+                            <Label htmlFor="username">Username</Label>
+                            <Input type="text" id="username" name="username"
+                                    onChange={handleRegisterFormInputChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="password">Password</Label>
+                            <Input type="password" id="password" name="password"
+                                    onChange={handleRegisterFormInputChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="firstname">First Name</Label>
+                            <Input type="text" id="firstname" name="firstname"
+                                    onChange={handleRegisterFormInputChange}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="lastname">Last Name</Label>
+                            <Input type="lastname" id="lastname" name="lastname"
+                                    onChange={handleRegisterFormInputChange}/>
+                        </FormGroup>
+                        <Button type="submit" value="submit" color="primary">Register</Button>
+                    </Form>
+                </ModalBody>
+            </Modal>
+        </>
+    );
 }
 
 export default Header;
