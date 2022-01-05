@@ -2,6 +2,8 @@ import * as ActionTypes from './ActionTypes';
 
 export const Auth = (state = {
     isLoading: false,
+    isRegisterLoading: false,
+    registerErrMess: null,
     isAuthenticated: !!localStorage.getItem('token'),
     token: localStorage.getItem('token'),
     user: localStorage.getItem('creds') ? JSON.parse(localStorage.getItem('creds')) : null,
@@ -44,6 +46,23 @@ export const Auth = (state = {
                 token: '',
                 user: null
             };
+        case ActionTypes.REGISTER_REQUEST:
+            return {
+                ...state,
+                isRegisterLoading:true,
+            }
+        case ActionTypes.REGISTER_SUCCESS:
+            return {
+                ...state,
+                isRegisterLoading:false,
+                registerErrMess:null
+            }
+        case ActionTypes.REGISTER_FAILURE:
+            return {
+                ...state,
+                isRegisterLoading:false,
+                registerErrMess: action.message
+            }
         default:
             return state
     }

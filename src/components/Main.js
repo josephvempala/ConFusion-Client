@@ -20,7 +20,8 @@ import {
     logoutUser,
     postComment,
     postFavorite,
-    postFeedback
+    postFeedback,
+    registerUser
 } from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
@@ -56,7 +57,8 @@ const mapDispatchToProps = (dispatch) => ({
     logoutUser: () => dispatch(logoutUser()),
     fetchFavorites: () => dispatch(fetchFavorites()),
     postFavorite: (dishId) => dispatch(postFavorite(dishId)),
-    deleteFavorite: (dishId) => dispatch(deleteFavorite(dishId))
+    deleteFavorite: (dishId) => dispatch(deleteFavorite(dishId)),
+    registerUser: (creds) => dispatch(registerUser(creds))
 });
 
 class Main extends Component {
@@ -116,6 +118,7 @@ class Main extends Component {
                 <Header auth={this.props.auth}
                         loginUser={this.props.loginUser}
                         logoutUser={this.props.logoutUser}
+                        registerUser={this.props.registerUser}
                 />
                 <TransitionGroup>
                     <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>

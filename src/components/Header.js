@@ -23,12 +23,15 @@ class Header extends Component {
         super(props);
         this.state = {
             isNavOpen: false,
-            isModalOpen: false
+            isModalOpen: false,
+            isRegisterModalOpen: false
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
     }
 
     toggleNav() {
@@ -43,11 +46,22 @@ class Header extends Component {
         });
     }
 
+    toggleRegisterModal(event) {
+        this.setState({
+            isRegisterModalOpen: !this.state.isRegisterModalOpen
+        });
+    }
+
+    handleRegister(event) {
+        this.toggleRegisterModal();
+        this.props.registerUser({username: this.username.value, password: this.password.value, firstname: this.firstname.value, lastname:this.lastname.value});
+        event.preventDefault();
+    }
+
     handleLogin(event) {
         this.toggleModal();
         this.props.loginUser({username: this.username.value, password: this.password.value});
         event.preventDefault();
-
     }
 
     handleLogout() {
@@ -132,14 +146,46 @@ class Header extends Component {
                                 <Input type="password" id="password" name="password"
                                        innerRef={(input) => this.password = input}/>
                             </FormGroup>
-                            <FormGroup check>
+                            <FormGroup className="d-flex" check>
                                 <Label check>
                                     <Input type="checkbox" name="remember"
                                            innerRef={(input) => this.remember = input}/>
                                     Remember me
                                 </Label>
+                                <Label className="ml-auto align-self-center" htmlFor="register">If its your first time here </Label>
+                                <Button className="ml-auto " onClick={this.toggleRegisterModal} id="register" type="button" value="register" color="primary">Register</Button>
                             </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Login</Button>
+                            <FormGroup>
+                                <Button type="submit" value="submit" color="primary">Login</Button>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+                <Modal isOpen={this.state.isRegisterModalOpen} toggle={this.toggleRegisterModal}>
+                    <ModalHeader toggle={this.toggleRegisterModal}>Login</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleRegister}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input type="text" id="username" name="username"
+                                       innerRef={(input) => this.username = input}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input type="password" id="password" name="password"
+                                       innerRef={(input) => this.password = input}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="firstname">First Name</Label>
+                                <Input type="text" id="firstname" name="firstname"
+                                       innerRef={(input) => this.firstname = input}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="lastname">Last Name</Label>
+                                <Input type="lastname" id="lastname" name="lastname"
+                                       innerRef={(input) => this.lastname = input}/>
+                            </FormGroup>
+                            <Button type="submit" value="submit" color="primary">Register</Button>
                         </Form>
                     </ModalBody>
                 </Modal>
