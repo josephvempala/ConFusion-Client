@@ -7,7 +7,6 @@ import {Leaders} from './leaders';
 import {favorites} from './favorites';
 import {Auth} from './auth';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
 import {InitialFeedback} from './forms';
 
 export const ConfigureStore = () => {
@@ -25,7 +24,7 @@ export const ConfigureStore = () => {
             })
         }),
         composeEnhancers(
-            applyMiddleware(thunk, logger)
+            applyMiddleware(thunk)
         )
     );
 }

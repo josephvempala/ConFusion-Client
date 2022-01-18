@@ -229,7 +229,6 @@ export const receiveLogin = (response) => {
 }
 
 export const loginError = (message) => {
-    alert(message)
     return {
         type: ActionTypes.LOGIN_FAILURE,
         message
@@ -288,7 +287,6 @@ export const receiveLogout = () => {
     }
 }
 
-// Logs the user out
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout())
     localStorage.removeItem('token');
@@ -416,7 +414,6 @@ export const receiveRegister = () => {
 }
 
 export const registerError = (message) => {
-    alert(message);
     return {
         type: ActionTypes.REGISTER_FAILURE,
         message

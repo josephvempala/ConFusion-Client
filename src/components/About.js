@@ -3,10 +3,10 @@ import {Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader} from 'reactstrap
 import {Link} from 'react-router-dom';
 import {LeaderList} from './LeaderList';
 
-function About(props) {
+function About({leaders}) {
     return (
         <div className="container">
-            <div className="row m-3">
+            <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
                     <BreadcrumbItem active>About Us</BreadcrumbItem>
@@ -64,7 +64,7 @@ function About(props) {
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
-                <LeaderList leaders={props.leaders}/>
+                <LeaderList leaders={leaders}/>
             </div>
         </div>
     );

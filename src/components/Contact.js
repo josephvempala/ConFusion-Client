@@ -19,7 +19,7 @@ function Contact({postFeedback, resetFeedbackForm}) {
 
     return (
         <div className="container">
-            <div className="row m-3">
+            <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
                     <BreadcrumbItem active>Contact Us</BreadcrumbItem>
@@ -35,6 +35,11 @@ function Contact({postFeedback, resetFeedbackForm}) {
                 </div>
                 <div className="col-12 col-sm-6 offset-sm-1">
                     <h5>Map of our Location</h5>
+                    <iframe
+                        title="location"
+                        className="location-iframe"
+                        src="https://maps.google.com/maps?q=80,%203rd%20Cross,%20Vignan%20Nagar&t=&z=13&ie=UTF8&iwloc=&output=embed" allowFullScreen>
+                    </iframe>
                 </div>
                 <div className="col-12 col-sm-11 offset-sm-1">
                     <div className="btn-group" role="group">

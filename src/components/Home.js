@@ -15,12 +15,12 @@ function RenderCard({item, isLoading, errMess}) {
         );
     } else
         return (
-            <FadeTransform className="mt-3" in
+            <FadeTransform className="my-3" in
                            transformProps={{
                                exitTransform: 'scale(0.5) translateY(-50%)'
                            }}>
                 <Card>
-                    <CardImg height="400px" width="400px" src={baseUrl + item.image} alt={item.name}/>
+                    <CardImg height="400px" width="400px" style={{"borderRadius":"1em"}} src={baseUrl + item.image} alt={item.name}/>
                     <CardBody>
                         <CardTitle>{item.name}</CardTitle>
                         {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null}

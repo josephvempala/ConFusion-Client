@@ -161,10 +161,10 @@ function CommentForm({postComment, dishId}) {
     );
 }
 
-const DishDetail = (props) => {
-    const dish = props.dishes.dishes.filter(x => x._id === props.dishId)[0];
-    const favourite = props.favorites.favorites?.dishes.some((dish) => dish._id === props.dishId)
-    if (props.dishes.isLoading) {
+const DishDetail = ({dishes, favorites, dishId, errMess, postFavorite, comments, postComment}) => {
+    const dish = dishes.dishes.filter(x => x._id === dishId)[0];
+    const favourite = favorites.favorites?.dishes.some((dish) => dish._id === dishId)
+    if (dishes.isLoading) {
         return (
             <div className="container">
                 <div className="row">
@@ -172,18 +172,18 @@ const DishDetail = (props) => {
                 </div>
             </div>
         );
-    } else if (props.dishes.errMess) {
+    } else if (dishes.errMess) {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.errMess}</h4>
+                    <h4>{errMess}</h4>
                 </div>
             </div>
         );
     } else if (dish != null)
         return (
             <div className="container">
-                <div className="row m-5">
+                <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
@@ -194,9 +194,9 @@ const DishDetail = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <RenderDish dish={dish} favorite={favourite} postFavorite={props.postFavorite}/>
-                    <RenderComments comments={props.comments.comments.filter(x=>x.dish === props.dishId)}
-                                    postComment={props.postComment}
+                    <RenderDish dish={dish} favorite={favourite} postFavorite={postFavorite}/>
+                    <RenderComments comments={comments.comments.filter(x=>x.dish === dishId)}
+                                    postComment={postComment}
                                     dishId={dish._id}/>
                 </div>
             </div>

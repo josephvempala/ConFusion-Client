@@ -16,6 +16,7 @@ import {
     Container
 } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
+import ErrorFloater from './ErrorFloater';
 
 function Header({registerUser, loginUser, logoutUser, auth}) {
 
@@ -72,9 +73,10 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
     const handleLogout = () => {
         logoutUser();
     }
-
+    
     return (
         <>
+            <ErrorFloater message={auth.errMess} timeout={5000}></ErrorFloater>
             <Navbar dark expand="md">
                 <Container>
                     <NavbarToggler aria-label="navbar" onClick={toggleNav}/>
