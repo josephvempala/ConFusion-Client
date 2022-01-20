@@ -19,34 +19,34 @@ function Leader({ leader }) {
     );
 }
 
-export function LeaderList(props) {
+export function LeaderList({leaders}) {
 
-    const leaders = props.leaders.leaders.map((leader) => {
+    const leadersList = leaders.leaders.map((leader) => {
         return (
             <Fade in key={leader._id}>
-                <div className="col-12 mt-2">
+                <div className="col-12 my-3">
                     <Leader leader={leader}/>
                 </div>
             </Fade>
         );
     });
 
-    if (props.leaders.isLoading) {
+    if (leaders.isLoading) {
         return (
             <Loading/>
         );
-    } else if (props.leaders.errMess) {
+    } else if (leaders.errMess) {
         return (
             <div className="col-12">
-                <h4>{props.leaders.errMess}</h4>
+                <h4>{leaders.errMess}</h4>
             </div>
         );
     } else {
         return (
-            <div className="mt-3">
+            <div>
                 <Media list>
                     <Stagger in>
-                        {leaders}
+                        {leadersList}
                     </Stagger>
                 </Media>
             </div>

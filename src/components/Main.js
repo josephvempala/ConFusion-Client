@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import Home from './Home';
 import About from './About';
 import Menu from './Menu';
@@ -10,20 +10,20 @@ import Footer from './Footer';
 import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
-    deleteFavorite,
     fetchComments,
     fetchDishes,
-    fetchFavorites,
     fetchLeaders,
     fetchPromos,
     loginUser,
     logoutUser,
     postComment,
     postFavorite,
-    postFeedback
+    postFeedback,
+    registerUser
 } from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import ErrorFloater from './ErrorFloater';
 
 const mapStateToProps = state => {
     return {
@@ -31,7 +31,6 @@ const mapStateToProps = state => {
         comments: state.comments,
         promotions: state.promotions,
         leaders: state.leaders,
-        favorites: state.favorites,
         auth: state.auth
     }
 }
@@ -54,90 +53,83 @@ const mapDispatchToProps = (dispatch) => ({
     postFeedback: (feedback) => dispatch(postFeedback(feedback)),
     loginUser: (creds) => dispatch(loginUser(creds)),
     logoutUser: () => dispatch(logoutUser()),
-    fetchFavorites: () => dispatch(fetchFavorites()),
     postFavorite: (dishId) => dispatch(postFavorite(dishId)),
-    deleteFavorite: (dishId) => dispatch(deleteFavorite(dishId))
+    registerUser: (creds) => dispatch(registerUser(creds))
 });
 
-class Main extends Component {
-
-    componentDidMount() {
-        this.props.fetchDishes();
-        this.props.fetchComments();
-        this.props.fetchPromos();
-        this.props.fetchLeaders();
-        this.props.fetchFavorites();
+function Main(props) {
+    const {fetchComments, fetchDishes, fetchPromos, fetchLeaders, fetchFavorites} = props;
+    useEffect(()=>{
+        fetchDishes();
+        fetchComments();
+        fetchPromos();
+        fetchLeaders();
+    },[fetchComments, fetchDishes, fetchPromos, fetchLeaders, fetchFavorites])
+        
+    const HomePage = () => {
+        return (
+            <Home dish={props.dishes.dishes.filter((dish) => dish.featured)[0]}
+                    dishesLoading={props.dishes.isLoading}
+                    dishesErrMess={props.dishes.errMess}
+                    promotion={props.promotions.promotions.filter((promo) => promo.featured)[0]}
+                    promosLoading={props.promotions.isLoading}
+                    promosErrMess={props.promotions.errMess}
+                    leader={props.leaders.leaders.filter((leader) => leader.featured)[0]}
+                    leaderLoading={props.leaders.isLoading}
+                    leaderErrMess={props.leaders.errMess}
+            />
+        );
     }
 
-    render() {
-
-        const HomePage = () => {
-            return (
-                <Home dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
-                      dishesLoading={this.props.dishes.isLoading}
-                      dishesErrMess={this.props.dishes.errMess}
-                      promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
-                      promosLoading={this.props.promotions.isLoading}
-                      promosErrMess={this.props.promotions.errMess}
-                      leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
-                      leaderLoading={this.props.leaders.isLoading}
-                      leaderErrMess={this.props.leaders.errMess}
-                />
-            );
-        }
-
-        const DishWithId = ({match}) => {
-            return (
-                this.props.auth.isAuthenticated
-                    ?
-                    <DishDetail 
-                        dishId={match.params.dishId}
-                    />
-                    :
-                    <DishDetail 
-                        dishId={match.params.dishId}
-                    />
-            );
-        }
-
-        const PrivateRoute = ({component: Component, ...rest}) => (
-            <Route {...rest} render={(props) => (
-                this.props.auth.isAuthenticated
-                    ? <Component {...props} />
-                    : <Redirect to={{
-                        pathname: '/home',
-                        state: {from: props.location}
-                    }}/>
-            )}/>
-        );
-
+    const DishWithId = ({match}) => {
         return (
-            <div className="full-viewport">
-                <Header auth={this.props.auth}
-                        loginUser={this.props.loginUser}
-                        logoutUser={this.props.logoutUser}
-                />
-                <TransitionGroup>
-                    <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+            <DishDetail 
+                dishId={match.params.dishId}
+            />
+        );
+    }
+
+    const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) => (
+        <Route {...rest} render={(props) => (
+                isAuthenticated
+                ? <Component {...props} />
+                : <Redirect to={{
+                    pathname: '/home',
+                    state: {from: props.location}
+                }}/>
+        )}/>
+    );
+
+    return (
+        <div className="full-viewport">
+            <ErrorFloater timeout={10000}></ErrorFloater>
+            <Header auth={props.auth}
+                    loginUser={props.loginUser}
+                    logoutUser={props.logoutUser}
+                    registerUser={props.registerUser}
+            />
+            <TransitionGroup>
+                <CSSTransition key={props.location.key} classNames="page" timeout={200}>
+                    <div className="my-3">
                         <Switch>
                             <Route path="/home" component={HomePage}/>
-                            <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders}/>}/>
-                            <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes}/>}/>
+                            <Route exact path='/aboutus' component={() => <About leaders={props.leaders}/>}/>
+                            <Route exact path="/menu" component={() => <Menu dishes={props.dishes}/>}/>
                             <Route path="/menu/:dishId" component={DishWithId}/>
                             <PrivateRoute exact path="/favorites"
-                                          component={() => <Favorites favorites={this.props.favorites}
-                                                                      deleteFavorite={this.props.deleteFavorite}/>}/>
+                                            component={() => <Favorites/>}
+                                            isAuthenticated={props.auth.isAuthenticated}/>
                             <Route exact path="/contactus"
-                                   component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}
-                                                             postFeedback={this.props.postFeedback}/>}/>
+                                    component={() => <Contact resetFeedbackForm={props.resetFeedbackForm}
+                                                                postFeedback={props.postFeedback}/>}/>
                             <Redirect to="/home"/>
                         </Switch>
-                    </CSSTransition>
-                </TransitionGroup>
-                <Footer/>
-            </div>
-        );
-    }
+                    </div> 
+                </CSSTransition>
+            </TransitionGroup>
+            <Footer/>
+        </div>
+    );
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -111,75 +111,60 @@ const mapDispatchToProps = (dispatch) => ({
     postFavorite: (dishId) => dispatch(postFavorite(dishId)),
 });
 
-class CommentForm extends Component {
+function CommentForm({postComment, dishId}) {
 
-    constructor(props) {
-        super(props);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-        this.toggleModal = this.toggleModal.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.state = {
-            isNavOpen: false,
-            isModalOpen: false
-        };
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
     }
 
-    toggleModal() {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
+    const handleSubmit = (values) => {
+        toggleModal();
+        postComment(dishId, values.rating, values.comment);
     }
 
-    handleSubmit(values) {
-        this.toggleModal();
-        this.props.postComment(this.props.dishId, values.rating, values.comment);
-    }
-
-    render() {
-        return (
-            <div>
-                <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"/> Submit
-                    Comment</Button>
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
-                    <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-                            <Row className="form-group">
-                                <Col>
-                                    <Label htmlFor="rating">Rating</Label>
-                                    <Control.select model=".rating" id="rating" className="form-control">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Control.select>
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Col>
-                                    <Label htmlFor="comment">Comment</Label>
-                                    <Control.textarea model=".comment" id="comment"
-                                                      rows="6" className="form-control"/>
-                                </Col>
-                            </Row>
-                            <Button type="submit" className="bg-primary">
-                                Submit
-                            </Button>
-                        </LocalForm>
-                    </ModalBody>
-                </Modal>
-            </div>
-        );
-    }
-
+    return (
+        <div>
+            <Button outline onClick={toggleModal}><span className="fa fa-pencil fa-lg"/> Submit
+                Comment</Button>
+            <Modal isOpen={isModalOpen} toggle={toggleModal}>
+                <ModalHeader toggle={toggleModal}>Submit Comment</ModalHeader>
+                <ModalBody>
+                    <LocalForm onSubmit={(values) => handleSubmit(values)}>
+                        <Row className="form-group">
+                            <Col>
+                                <Label htmlFor="rating">Rating</Label>
+                                <Control.select model=".rating" id="rating" className="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Control.select>
+                            </Col>
+                        </Row>
+                        <Row className="form-group">
+                            <Col>
+                                <Label htmlFor="comment">Comment</Label>
+                                <Control.textarea model=".comment" id="comment"
+                                                    rows="6" className="form-control"/>
+                            </Col>
+                        </Row>
+                        <Button type="submit" className="bg-primary">
+                            Submit
+                        </Button>
+                    </LocalForm>
+                </ModalBody>
+            </Modal>
+        </div>
+    );
 }
 
-const DishDetail = (props) => {
-    const dish = props.dishes.dishes.filter(x => x._id === props.dishId)[0];
-    const favourite = props.favorites.favorites?.dishes.some((dish) => dish._id === props.dishId)
-    if (props.dishes.isLoading) {
+const DishDetail = ({dishes, favorites, dishId, errMess, postFavorite, comments, postComment}) => {
+    const dish = dishes.dishes.filter(x => x._id === dishId)[0];
+    const favourite = favorites.favorites?.dishes.some((dish) => dish._id === dishId)
+    if (dishes.isLoading) {
         return (
             <div className="container">
                 <div className="row">
@@ -187,18 +172,18 @@ const DishDetail = (props) => {
                 </div>
             </div>
         );
-    } else if (props.dishes.errMess) {
+    } else if (dishes.errMess) {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.errMess}</h4>
+                    <h4>{errMess}</h4>
                 </div>
             </div>
         );
     } else if (dish != null)
         return (
             <div className="container">
-                <div className="row mt-5">
+                <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
@@ -209,9 +194,9 @@ const DishDetail = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <RenderDish dish={dish} favorite={favourite} postFavorite={props.postFavorite}/>
-                    <RenderComments comments={props.comments.comments.filter(x=>x.dish === props.dishId)}
-                                    postComment={props.postComment}
+                    <RenderDish dish={dish} favorite={favourite} postFavorite={postFavorite}/>
+                    <RenderComments comments={comments.comments.filter(x=>x.dish === dishId)}
+                                    postComment={postComment}
                                     dishId={dish._id}/>
                 </div>
             </div>

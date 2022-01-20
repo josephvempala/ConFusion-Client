@@ -249,9 +249,11 @@ export const loginUser = (creds) => (dispatch) => {
                 if (response.ok) {
                     return response;
                 } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
+                    return response.json().then((resp) => {
+                        const error = new Error('Error ' + resp.err.message);
+                        error.response = response;
+                        throw error;
+                    })
                 }
             },
             error => {
@@ -285,7 +287,6 @@ export const receiveLogout = () => {
     }
 }
 
-// Logs the user out
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout())
     localStorage.removeItem('token');
@@ -398,3 +399,59 @@ export const addFavorites = (favorites) => ({
     type: ActionTypes.ADD_FAVORITES,
     payload: favorites
 });
+
+export const requestRegister = (creds) => {
+    return {
+        type: ActionTypes.REGISTER_REQUEST,
+        creds
+    }
+}
+
+export const receiveRegister = () => {
+    return {
+        type: ActionTypes.REGISTER_SUCCESS,
+    }
+}
+
+export const registerError = (message) => {
+    return {
+        type: ActionTypes.REGISTER_FAILURE,
+        message
+    }
+}
+
+export const registerUser = (creds) => (dispatch) => {
+    dispatch(requestRegister(creds));
+    return fetch(baseUrl + 'users/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(creds)
+    })
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    return response.json().then((resp) => {
+                        const error = new Error('Error ' + resp.err.message);
+                        error.response = response;
+                        throw error;
+                    })
+                }
+            },
+            error => {
+                throw error;
+            })
+        .then(response => response.json())
+        .then(response => {
+            if (response.success) {
+                dispatch(receiveRegister());
+            } else {
+                const error = new Error('Error ' + response.status);
+                error.response = response;
+                throw error;
+            }
+        })
+        .catch(error => dispatch(registerError(error.message)))
+}

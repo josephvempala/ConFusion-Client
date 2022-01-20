@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Jumbotron} from 'reactstrap';
 import {Loading} from './Loading';
 import {baseUrl} from '../shared/baseUrl';
@@ -15,12 +15,12 @@ function RenderCard({item, isLoading, errMess}) {
         );
     } else
         return (
-            <FadeTransform className="mt-3" in
+            <FadeTransform className="my-3" in
                            transformProps={{
                                exitTransform: 'scale(0.5) translateY(-50%)'
                            }}>
                 <Card>
-                    <CardImg height="400px" width="400px" src={baseUrl + item.image} alt={item.name}/>
+                    <CardImg height="400px" width="400px" style={{"borderRadius":"1em"}} src={baseUrl + item.image} alt={item.name}/>
                     <CardBody>
                         <CardTitle>{item.name}</CardTitle>
                         {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null}
@@ -32,6 +32,17 @@ function RenderCard({item, isLoading, errMess}) {
 }
 
 function Home(props) {
+    useEffect(()=>{
+        const Form = document.getElementById('reserveForm');
+        if(Form.childNodes.length === 0){
+            const Script = document.createElement("script");
+            Script.setAttribute('src',"https://checkout.razorpay.com/v1/payment-button.js")
+            Script.setAttribute('data-payment_button_id',"pl_Id9dy85qzmg5CX")
+            Form.appendChild(Script);
+        }
+        return;
+      },[]);
+
     return (
         <>
             <Jumbotron>
@@ -41,6 +52,9 @@ function Home(props) {
                             <h1>Ristorante Di Udupi</h1>
                             <p>We take inspiration from the World's best cuisines, and create a unique fusion
                                 experience. Our lipsmacking creations will tickle your culinary senses!</p>
+                        </div>
+                        <div className="col-12 col-sm-6 d-flex align-items-center">
+                        <form className="ml-auto" id='reserveForm'/>
                         </div>
                     </div>
                 </div>
@@ -64,6 +78,7 @@ function Home(props) {
                     </div>
                 </div>
             </div>
+            
         </>
     );
 }

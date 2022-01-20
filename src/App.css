@@ -14,7 +14,6 @@
     border-bottom: 1px ridge;
     min-height: 400px;
 }
-
 .footer {
     width:100%;
     position: relative;
@@ -24,12 +23,21 @@
     padding: 20px 0px 20px 0px;
 }
 
+a:hover{
+    text-decoration: none;
+}
+.removeTextDecor, .removeTextDecor:hover{
+    color: inherit;
+}
+
 .loginbtn{
     color: floralwhite;
     border-color: #26A69A;
 }
 
 .jumbotron {
+    position: relative;
+    top: -16px;
     padding: 70px 30px 70px 30px;
     margin: 0px auto;
     background: #00897B;
@@ -55,7 +63,7 @@ address {
 .page-enter-active {
     opacity: 1;
     transform: translateX(0%);
-    transition: all 300ms ease-in;
+    transition: all 200ms ease-in;
 }
 
 .page-exit {
@@ -66,5 +74,82 @@ address {
 .page-exit-active {
     opacity: 0.01;
     transform: translateX(100%);
-    transition: all 300ms ease-out;
+    transition: all 200ms ease-out;
+}
+
+.location-iframe{
+    height: 100%;
+    width: 100%;
+}
+
+.buttontoa{
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: arial, sans-serif;
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.card:hover{
+    box-shadow: 5px 5px 5px 2px rgba(120, 120, 126, 0.4);
+    transition: all 200ms linear;
+}
+.media{
+    padding: 1em;
+    border: 1px solid rgba(100, 100, 120, 0.35);
+}
+.dd-img{
+    height:410px;
+    width:310px;
+}
+.dd-img,
+.card,
+.media,
+.media-object{
+    border-radius: 1em;
+}
+
+.error-floater{
+    color: floralwhite;
+    z-index: 2;
+    height: min-content;
+    width: max-content;
+    padding: 0.65rem;
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    border-radius: 0.175rem;
+}
+.floater-error {
+    background-color: rgb(230, 79, 79);
+    border: 2px solid rgb(158, 46, 46);
+    animation: fade-in 200ms ease-in;
+}
+
+.floater-error-exit{
+    background-color: rgb(230, 79, 79);
+    border: 2px solid rgb(158, 46, 46);
+    animation: fade-out 200ms ease-in;
+}
+
+@keyframes fade-in {
+    from{
+        opacity: 0.1;
+        transform: translateY(-100%);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+@keyframes fade-out {
+    to{
+        opacity: 0.1;
+        transform: translateY(-100%);
+    }
+    from{
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }

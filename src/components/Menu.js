@@ -1,63 +1,71 @@
 import React from 'react';
-import {Breadcrumb, BreadcrumbItem, Card, CardImg, CardImgOverlay, CardTitle} from 'reactstrap';
-import {Link} from 'react-router-dom';
-import {Loading} from './Loading';
-import {baseUrl} from '../shared/baseUrl';
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Loading } from './Loading';
+import { baseUrl } from '../shared/baseUrl';
 
-function RenderMenuItem({dish}) {
+function RenderMenuItem({ dish }) {
     return (
-        <Card>
-            <Link to={`/menu/${dish._id}`}>
-                <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name}/>
-                <CardImgOverlay>
-                    <CardTitle>{dish.name}</CardTitle>
-                </CardImgOverlay>
+        <div className="card">
+            <Link className="removeTextDecor" to={`menu/${dish._id}`}>
+                <div className="row" style={{"minHeight":"400px"}}>
+                    <div className="col-md-7">
+                        <img className="dd-img" src={baseUrl + dish.image} alt={dish.name} />
+                    </div>
+                    <div className="col-md-5">
+                        <div className="card-body">
+                            <h5 className="card-title">{dish.name}</h5>
+                            <p className="card-text">{dish.description}</p>
+                            <p className="card-text"><small className="text-muted">Updated At {new Date(dish.updatedAt).toDateString()}</small></p>
+                        </div>
+                    </div>
+                </div>
             </Link>
-        </Card>
+        </div>
     );
 }
 
-const Menu = (props) => {
+const Menu = ({dishes}) => {
 
-    const menu = props.dishes.dishes.map((dish) => {
+    const menuList = dishes.dishes.map((dish) => {
         return (
-            <div key={dish._id} className="col-12 col-md-5 m-1">
-                <RenderMenuItem dish={dish}/>
+            <div key={dish._id} className="col-12 col-md-6 my-3">
+                <RenderMenuItem dish={dish} />
             </div>
         );
     });
 
-    if (props.dishes.isLoading) {
+    if (dishes.isLoading) {
         return (
             <div className="container">
                 <div className="row">
-                    <Loading/>
+                    <Loading />
                 </div>
             </div>
         );
-    } else if (props.dishes.errMess) {
+    } else if (dishes.errMess) {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.dishes.errMess}</h4>
+                    <h4>{dishes.errMess}</h4>
                 </div>
             </div>
         );
     } else
         return (
             <div className="container">
-                <div className="row mt-3">
+                <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
                         <BreadcrumbItem active>Menu</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>Menu</h3>
-                        <hr/>
+                        <hr />
                     </div>
                 </div>
                 <div className="row">
-                    {menu}
+                    {menuList}
                 </div>
             </div>
         );
