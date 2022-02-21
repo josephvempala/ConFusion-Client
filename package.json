@@ -47,5 +47,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "babel-eslint": "^10.1.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "prettier": "^2.5.1"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/josephvempala/ConFusion-Client",
+  "author": "joseph <josephvempala@gmail.com>",
+  "license": "MIT"
 }

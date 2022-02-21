@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
     Button,
     Collapse,
+    Container,
     Form,
     FormGroup,
     Input,
@@ -13,13 +14,11 @@ import {
     Navbar,
     NavbarToggler,
     NavItem,
-    Container
 } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 import ErrorFloater from './ErrorFloater';
 
 function Header({registerUser, loginUser, logoutUser, auth}) {
-
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
@@ -32,9 +31,9 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         setLoginForm({
             ...loginForm,
-            [name]:value
+            [name]: value,
         });
-    }
+    };
 
     const handleRegisterFormInputChange = (event) => {
         const target = event.target;
@@ -42,97 +41,90 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         setRegisterForm({
             ...registerForm,
-            [name]:value
-        })
-    }
+            [name]: value,
+        });
+    };
 
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
-    }
+    };
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
-    }
+    };
 
     const toggleRegisterModal = () => {
         setIsRegisterModalOpen(!isRegisterModalOpen);
-    }
+    };
 
     const handleRegister = (event) => {
         toggleRegisterModal();
         registerUser(registerForm);
         event.preventDefault();
-    }
+    };
 
     const handleLogin = (event) => {
         toggleModal();
         loginUser(loginForm);
         event.preventDefault();
-    }
+    };
 
     const handleLogout = () => {
         logoutUser();
-    }
-    
+    };
+
     return (
         <>
-            <ErrorFloater message={auth.errMess} timeout={5000}></ErrorFloater>
+            <ErrorFloater message={auth.errMess} timeout={5000} />
             <Navbar dark expand="md">
                 <Container>
-                    <NavbarToggler aria-label="navbar" onClick={toggleNav}/>
+                    <NavbarToggler aria-label="navbar" onClick={toggleNav} />
                     <Collapse isOpen={isNavOpen} navbar>
                         <Nav navbar>
                             <NavItem>
                                 <NavLink className="nav-link" to="/home">
-                                    <span className="fa fa-home fa-lg"/> Home
+                                    <span className="fa fa-home fa-lg" /> Home
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink className="nav-link" to="/aboutus">
-                                    <span className="fa fa-info fa-lg"/> About
+                                    <span className="fa fa-info fa-lg" /> About
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink className="nav-link" to="/menu">
-                                    <span className="fa fa-list fa-lg"/> Menu
+                                    <span className="fa fa-list fa-lg" /> Menu
                                 </NavLink>
                             </NavItem>
-                            {auth.isAuthenticated &&
+                            {auth.isAuthenticated && (
                                 <NavItem>
                                     <NavLink className="nav-link" to="/favorites">
-                                        <span className="fa fa-heart fa-lg"/> Favorites
+                                        <span className="fa fa-heart fa-lg" /> Favorites
                                     </NavLink>
                                 </NavItem>
-                            }
+                            )}
                             <NavItem>
                                 <NavLink className="nav-link" to="/contactus">
-                                    <span className="fa fa-address-card fa-lg"/> Contact
+                                    <span className="fa fa-address-card fa-lg" /> Contact
                                 </NavLink>
                             </NavItem>
                         </Nav>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                {!auth.isAuthenticated ?
+                                {!auth.isAuthenticated ? (
                                     <Button className="loginbtn" outline onClick={toggleModal}>
-                                        <span className="fa fa-sign-in fa-lg"/> Login
-                                        {auth.isFetching ?
-                                            <span className="fa fa-spinner fa-pulse fa-fw"/>
-                                            : null
-                                        }
+                                        <span className="fa fa-sign-in fa-lg" /> Login
+                                        {auth.isFetching ? <span className="fa fa-spinner fa-pulse fa-fw" /> : null}
                                     </Button>
-                                    :
+                                ) : (
                                     <div>
                                         <div className="navbar-text mr-3">{auth.user.username}</div>
                                         <Button className="loginbtn" outline onClick={handleLogout}>
-                                            <span className="fa fa-sign-out fa-lg"/> Logout
-                                            {auth.isFetching ?
-                                                <span className="fa fa-spinner fa-pulse fa-fw"/>
-                                                : null
-                                            }
+                                            <span className="fa fa-sign-out fa-lg" /> Logout
+                                            {auth.isFetching ? <span className="fa fa-spinner fa-pulse fa-fw" /> : null}
                                         </Button>
                                     </div>
-                                }
-
+                                )}
                             </NavItem>
                         </Nav>
                     </Collapse>
@@ -144,24 +136,25 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
                     <Form onSubmit={handleLogin}>
                         <FormGroup>
                             <Label htmlFor="username">Username</Label>
-                            <Input type="text" id="username" name="username"
-                                    onChange={handleLoginFormInputChange}/>
+                            <Input type="text" id="username" name="username" onChange={handleLoginFormInputChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="password">Password</Label>
-                            <Input type="password" id="password" name="password"
-                                    onChange={handleLoginFormInputChange}/>
+                            <Input type="password" id="password" name="password" onChange={handleLoginFormInputChange} />
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" name="remember"
-                                    onChange={handleLoginFormInputChange}/>
+                                <Input type="checkbox" name="remember" onChange={handleLoginFormInputChange} />
                                 Remember me
                             </Label>
                         </FormGroup>
                         <FormGroup className="d-flex">
-                            <Button type="submit" value="submit" color="primary">Login</Button>
-                            <Button className="ml-auto " onClick={toggleRegisterModal} id="register" type="button" value="register" color="primary">Register</Button>
+                            <Button type="submit" value="submit" color="primary">
+                                Login
+                            </Button>
+                            <Button className="ml-auto " onClick={toggleRegisterModal} id="register" type="button" value="register" color="primary">
+                                Register
+                            </Button>
                         </FormGroup>
                     </Form>
                 </ModalBody>
@@ -172,25 +165,23 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
                     <Form onSubmit={handleRegister}>
                         <FormGroup>
                             <Label htmlFor="username">Username</Label>
-                            <Input type="text" id="username" name="username"
-                                    onChange={handleRegisterFormInputChange}/>
+                            <Input type="text" id="username" name="username" onChange={handleRegisterFormInputChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="password">Password</Label>
-                            <Input type="password" id="password" name="password"
-                                    onChange={handleRegisterFormInputChange}/>
+                            <Input type="password" id="password" name="password" onChange={handleRegisterFormInputChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="firstname">First Name</Label>
-                            <Input type="text" id="firstname" name="firstname"
-                                    onChange={handleRegisterFormInputChange}/>
+                            <Input type="text" id="firstname" name="firstname" onChange={handleRegisterFormInputChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="lastname">Last Name</Label>
-                            <Input type="lastname" id="lastname" name="lastname"
-                                    onChange={handleRegisterFormInputChange}/>
+                            <Input type="lastname" id="lastname" name="lastname" onChange={handleRegisterFormInputChange} />
                         </FormGroup>
-                        <Button type="submit" value="submit" color="primary">Register</Button>
+                        <Button type="submit" value="submit" color="primary">
+                            Register
+                        </Button>
                     </Form>
                 </ModalBody>
             </Modal>

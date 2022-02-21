@@ -2,20 +2,23 @@
     margin: 0px auto;
     padding: 0px auto;
 }
-.full-viewport{
+
+.full-viewport {
     min-width: min-content;
     display: flex;
     height: 100vh;
     flex-direction: column;
 }
+
 .row-content {
     margin: 0px auto;
     padding: 50px 0px 50px 0px;
     border-bottom: 1px ridge;
     min-height: 400px;
 }
+
 .footer {
-    width:100%;
+    width: 100%;
     position: relative;
     background-color: #26A69A;
     margin: 0px;
@@ -23,14 +26,17 @@
     padding: 20px 0px 20px 0px;
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
 }
-.removeTextDecor, .removeTextDecor:hover{
+
+.removeTextDecor, .removeTextDecor:hover {
+    display: inline-block;
+    padding: 5px;
     color: inherit;
 }
 
-.loginbtn{
+.loginbtn {
     color: floralwhite;
     border-color: #26A69A;
 }
@@ -42,7 +48,7 @@ a:hover{
     margin: 0px auto;
     background: #00897B;
     color: white;
-    border-radius:0px ;
+    border-radius: 0px;
 }
 
 address {
@@ -77,40 +83,44 @@ address {
     transition: all 200ms ease-out;
 }
 
-.location-iframe{
+.location-iframe {
     height: 100%;
     width: 100%;
 }
 
-.buttontoa{
-    background: none!important;
+.buttontoa {
+    background: none !important;
     border: none;
-    padding: 0!important;
+    padding: 0 !important;
     font-family: arial, sans-serif;
     color: #069;
     text-decoration: underline;
     cursor: pointer;
 }
-.card:hover{
+
+.card:hover {
     box-shadow: 5px 5px 5px 2px rgba(120, 120, 126, 0.4);
     transition: all 200ms linear;
 }
-.media{
+
+.media {
     padding: 1em;
     border: 1px solid rgba(100, 100, 120, 0.35);
 }
-.dd-img{
-    height:410px;
-    width:310px;
+
+.dd-img {
+    height: 410px;
+    width: 310px;
 }
+
 .dd-img,
 .card,
 .media,
-.media-object{
+.media-object {
     border-radius: 1em;
 }
 
-.error-floater{
+.error-floater {
     color: floralwhite;
     z-index: 2;
     height: min-content;
@@ -119,37 +129,137 @@ address {
     position: fixed;
     top: 60px;
     right: 20px;
-    border-radius: 0.175rem;
+    border-radius: 0.175em;
 }
+
 .floater-error {
     background-color: rgb(230, 79, 79);
     border: 2px solid rgb(158, 46, 46);
     animation: fade-in 200ms ease-in;
 }
 
-.floater-error-exit{
+.floater-error-exit {
     background-color: rgb(230, 79, 79);
     border: 2px solid rgb(158, 46, 46);
     animation: fade-out 200ms ease-in;
 }
 
 @keyframes fade-in {
-    from{
+    from {
         opacity: 0.1;
         transform: translateY(-100%);
     }
-    to{
+    to {
         opacity: 1;
         transform: translateY(0%);
     }
 }
+
 @keyframes fade-out {
-    to{
+    to {
         opacity: 0.1;
         transform: translateY(-100%);
     }
-    from{
+    from {
         opacity: 1;
         transform: translateY(0%);
     }
+}
+
+.card-skeleton {
+    overflow: hidden;
+}
+
+.loading {
+    position: relative;
+    background-color: #e2e2e2;
+}
+
+.loading::after {
+    display: block;
+    position: absolute;
+    content: '';
+    background: linear-gradient(90deg, transparent,
+    rgba(255, 255, 255, 0.5), transparent);
+    height: 100%;
+    width: 100%;
+    transform: translateX(-100%);
+    animation: loading 800ms infinite;
+}
+
+.removeButtonStyling {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    outline: inherit;
+}
+
+@keyframes loading {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.4rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.card-subtitle {
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.card-skeleton-image {
+    width: 100%;
+    height: 300px;
+    border-radius: 0.175em;
+}
+
+.card-skeleton-body {
+    width: 100%;
+    height: 240px;
+    border-radius: 0.175em;
+}
+
+.card-skeleton-title {
+    margin: 1.2rem;
+    height: 1.5rem;
+    width: 10rem;
+    border-radius: 0.175em;
+}
+
+.card-skeleton-text {
+    margin: 0.8rem 1.2rem;
+    height: 1rem;
+    width: 90%;
+    border-radius: 0.175em;
+}
+
+.card-skeleton-text-end {
+    margin: 0.8rem 1.2rem;
+    height: 1rem;
+    width: 40%;
+    border-radius: 0.175em;
+}
+
+.comment {
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+}
+
+.comment-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.comments-container {
+    background-color: #7dcf81;
+    border-radius: 0.3em;
+    height: min-content;
 }

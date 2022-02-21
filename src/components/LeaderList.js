@@ -1,10 +1,10 @@
 import React from 'react';
-import { Media } from 'reactstrap';
-import { baseUrl } from '../shared/baseUrl';
+import {Media} from 'reactstrap';
+import {baseUrl} from '../shared/baseUrl';
 import {Loading} from './Loading';
 import {Fade, Stagger} from 'react-animation-components';
 
-function Leader({ leader }) {
+function Leader({leader}) {
     return (
         <Media tag="li">
             <Media left middle>
@@ -20,21 +20,18 @@ function Leader({ leader }) {
 }
 
 export function LeaderList({leaders}) {
-
     const leadersList = leaders.leaders.map((leader) => {
         return (
             <Fade in key={leader._id}>
                 <div className="col-12 my-3">
-                    <Leader leader={leader}/>
+                    <Leader leader={leader} />
                 </div>
             </Fade>
         );
     });
 
     if (leaders.isLoading) {
-        return (
-            <Loading/>
-        );
+        return <Loading />;
     } else if (leaders.errMess) {
         return (
             <div className="col-12">
@@ -45,9 +42,7 @@ export function LeaderList({leaders}) {
         return (
             <div>
                 <Media list>
-                    <Stagger in>
-                        {leadersList}
-                    </Stagger>
+                    <Stagger in>{leadersList}</Stagger>
                 </Media>
             </div>
         );

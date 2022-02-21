@@ -1,10 +1,13 @@
 import * as ActionTypes from './ActionTypes';
 
-export const favorites = (state = {
-    isLoading: true,
-    errMess: null,
-    favorites: null
-}, action) => {
+export const favorites = (
+    state = {
+        isLoading: true,
+        errMess: null,
+        favorites: null,
+    },
+    action,
+) => {
     switch (action.type) {
         case ActionTypes.ADD_FAVORITES:
             return {...state, isLoading: false, errMess: null, favorites: action.payload};
@@ -18,4 +21,4 @@ export const favorites = (state = {
         default:
             return state;
     }
-}
+};

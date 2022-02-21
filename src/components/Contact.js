@@ -2,52 +2,58 @@ import React from 'react';
 import {Breadcrumb, BreadcrumbItem, Button, Col, Label, Row} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Control, Errors, Form} from 'react-redux-form';
-import { Address } from './Address';
+import {Address} from './Address';
 
 const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => (val) && (val.length >= len);
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 function Contact({postFeedback, resetFeedbackForm}) {
-
     const handleSubmit = (values) => {
         postFeedback(values);
         resetFeedbackForm();
-    }
+    };
 
     return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
-                    <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link to="/home">Home</Link>
+                    </BreadcrumbItem>
                     <BreadcrumbItem active>Contact Us</BreadcrumbItem>
                 </Breadcrumb>
                 <div className="col-12">
                     <h3>Contact Us</h3>
-                    <hr/>
+                    <hr />
                 </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-sm-4 offset-sm-1">
-                    <Address/>
+                    <Address />
                 </div>
                 <div className="col-12 col-sm-6 offset-sm-1">
                     <h5>Map of our Location</h5>
                     <iframe
                         title="location"
                         className="location-iframe"
-                        src="https://maps.google.com/maps?q=80,%203rd%20Cross,%20Vignan%20Nagar&t=&z=13&ie=UTF8&iwloc=&output=embed" allowFullScreen>
-                    </iframe>
+                        src="https://maps.google.com/maps?q=80,%203rd%20Cross,%20Vignan%20Nagar&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        allowFullScreen
+                    />
                 </div>
                 <div className="col-12 col-sm-11 offset-sm-1">
                     <div className="btn-group" role="group">
-                        <button className="btn btn-primary" href="tel:+85212345678"><i
-className="fa fa-phone"/> Call</button>
-                        <button className="btn btn-info"><i className="fa fa-skype"/> Skype</button>
-                        <button className="btn btn-success" href="mailto:DiUdupi@food.net"><i
-className="fa fa-envelope-o"/> Email</button>
+                        <button className="btn btn-primary" href="tel:+85212345678">
+                            <i className="fa fa-phone" /> Call
+                        </button>
+                        <button className="btn btn-info">
+                            <i className="fa fa-skype" /> Skype
+                        </button>
+                        <button className="btn btn-success" href="mailto:DiUdupi@food.net">
+                            <i className="fa fa-envelope-o" /> Email
+                        </button>
                     </div>
                 </div>
             </div>
@@ -58,14 +64,21 @@ className="fa fa-envelope-o"/> Email</button>
                 <div className="col-12 col-md-9">
                     <Form model="feedback" onSubmit={(values) => handleSubmit(values)}>
                         <Row className="form-group">
-                            <Label htmlFor="firstname" md={2}>First Name</Label>
+                            <Label htmlFor="firstname" md={2}>
+                                First Name
+                            </Label>
                             <Col md={10}>
-                                <Control.text model=".firstname" id="firstname" name="firstname"
-                                                placeholder="First Name"
-                                                className="form-control"
-                                                validators={{
-                                                    required, minLength: minLength(3), maxLength: maxLength(15)
-                                                }}
+                                <Control.text
+                                    model=".firstname"
+                                    id="firstname"
+                                    name="firstname"
+                                    placeholder="First Name"
+                                    className="form-control"
+                                    validators={{
+                                        required,
+                                        minLength: minLength(3),
+                                        maxLength: maxLength(15),
+                                    }}
                                 />
                                 <Errors
                                     className="text-danger"
@@ -74,20 +87,27 @@ className="fa fa-envelope-o"/> Email</button>
                                     messages={{
                                         required: 'Required ',
                                         minLength: 'Must be greater than 2 characters ',
-                                        maxLength: 'Must be 15 characters or less '
+                                        maxLength: 'Must be 15 characters or less ',
                                     }}
                                 />
                             </Col>
                         </Row>
                         <Row className="form-group">
-                            <Label htmlFor="lastname" md={2}>Last Name</Label>
+                            <Label htmlFor="lastname" md={2}>
+                                Last Name
+                            </Label>
                             <Col md={10}>
-                                <Control.text model=".lastname" id="lastname" name="lastname"
-                                                placeholder="Last Name"
-                                                className="form-control"
-                                                validators={{
-                                                    required, minLength: minLength(3), maxLength: maxLength(15)
-                                                }}
+                                <Control.text
+                                    model=".lastname"
+                                    id="lastname"
+                                    name="lastname"
+                                    placeholder="Last Name"
+                                    className="form-control"
+                                    validators={{
+                                        required,
+                                        minLength: minLength(3),
+                                        maxLength: maxLength(15),
+                                    }}
                                 />
                                 <Errors
                                     className="text-danger"
@@ -96,23 +116,28 @@ className="fa fa-envelope-o"/> Email</button>
                                     messages={{
                                         required: 'Required',
                                         minLength: 'Must be greater than 2 characters',
-                                        maxLength: 'Must be 15 characters or less'
+                                        maxLength: 'Must be 15 characters or less',
                                     }}
                                 />
                             </Col>
                         </Row>
                         <Row className="form-group">
-                            <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
+                            <Label htmlFor="telnum" md={2}>
+                                Contact Tel.
+                            </Label>
                             <Col md={10}>
-                                <Control.text model=".telnum" id="telnum" name="telnum"
-                                                placeholder="Tel. Number"
-                                                className="form-control"
-                                                validators={{
-                                                    required,
-                                                    minLength: minLength(3),
-                                                    maxLength: maxLength(15),
-                                                    isNumber
-                                                }}
+                                <Control.text
+                                    model=".telnum"
+                                    id="telnum"
+                                    name="telnum"
+                                    placeholder="Tel. Number"
+                                    className="form-control"
+                                    validators={{
+                                        required,
+                                        minLength: minLength(3),
+                                        maxLength: maxLength(15),
+                                        isNumber,
+                                    }}
                                 />
                                 <Errors
                                     className="text-danger"
@@ -122,20 +147,26 @@ className="fa fa-envelope-o"/> Email</button>
                                         required: 'Required',
                                         minLength: 'Must be greater than 2 numbers',
                                         maxLength: 'Must be 15 numbers or less',
-                                        isNumber: 'Must be a number'
+                                        isNumber: 'Must be a number',
                                     }}
                                 />
                             </Col>
                         </Row>
                         <Row className="form-group">
-                            <Label htmlFor="email" md={2}>Email</Label>
+                            <Label htmlFor="email" md={2}>
+                                Email
+                            </Label>
                             <Col md={10}>
-                                <Control.text model=".email" id="email" name="email"
-                                                placeholder="Email"
-                                                className="form-control"
-                                                validators={{
-                                                    required, validEmail
-                                                }}
+                                <Control.text
+                                    model=".email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    className="form-control"
+                                    validators={{
+                                        required,
+                                        validEmail,
+                                    }}
                                 />
                                 <Errors
                                     className="text-danger"
@@ -143,7 +174,7 @@ className="fa fa-envelope-o"/> Email</button>
                                     show="touched"
                                     messages={{
                                         required: 'Required',
-                                        validEmail: 'Invalid Email Address'
+                                        validEmail: 'Invalid Email Address',
                                     }}
                                 />
                             </Col>
@@ -152,27 +183,24 @@ className="fa fa-envelope-o"/> Email</button>
                             <Col md={{size: 6, offset: 2}}>
                                 <div className="form-check">
                                     <Label check>
-                                        <Control.checkbox model=".agree" name="agree"
-                                                            className="form-check-input"
-                                        /> {' '}
+                                        <Control.checkbox model=".agree" name="agree" className="form-check-input" />{' '}
                                         <strong>May we contact you?</strong>
                                     </Label>
                                 </div>
                             </Col>
                             <Col md={{size: 3, offset: 1}}>
-                                <Control.select model=".contactType" name="contactType"
-                                                className="form-control">
+                                <Control.select model=".contactType" name="contactType" className="form-control">
                                     <option>Tel.</option>
                                     <option>Email</option>
                                 </Control.select>
                             </Col>
                         </Row>
                         <Row className="form-group">
-                            <Label htmlFor="message" md={2}>Your Feedback</Label>
+                            <Label htmlFor="message" md={2}>
+                                Your Feedback
+                            </Label>
                             <Col md={10}>
-                                <Control.textarea model=".message" id="message" name="message"
-                                                    rows="12"
-                                                    className="form-control"/>
+                                <Control.textarea model=".message" id="message" name="message" rows="12" className="form-control" />
                             </Col>
                         </Row>
                         <Row className="form-group">

@@ -20,11 +20,9 @@ export const ConfigureStore = () => {
             auth: Auth,
             favorites,
             ...createForms({
-                feedback: InitialFeedback
-            })
+                feedback: InitialFeedback,
+            }),
         }),
-        composeEnhancers(
-            applyMiddleware(thunk)
-        )
+        composeEnhancers(applyMiddleware(thunk)),
     );
-}
+};

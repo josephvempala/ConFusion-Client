@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { Address } from './Address';
+import {Address} from './Address';
 
 function Footer() {
     return (
@@ -8,30 +8,53 @@ function Footer() {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-4 offset-1 col-sm-2">
-                        <h5>Links</h5>
+                        <p className="card-title">Links</p>
                         <ul className="list-unstyled">
-                            <li><Link className="removeTextDecor" to="/home">Home</Link></li>
-                            <li><Link className="removeTextDecor" to="/aboutus">About</Link></li>
-                            <li><Link className="removeTextDecor" to="/menu">Menu</Link></li>
-                            <li><Link className="removeTextDecor" to="/contactus">Contact</Link></li>
+                            <li>
+                                <Link className="removeTextDecor" to="/home">
+                                    Home
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="removeTextDecor" to="/aboutus">
+                                    About
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="removeTextDecor" to="/menu">
+                                    Menu
+                                </Link>
+                            </li>
+                            <li>
+                                <Link className="removeTextDecor" to="/contactus">
+                                    Contact
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                     <div className="col-7 col-sm-5">
-                        <Address/>
+                        <Address />
                     </div>
                     <div className="col-12 col-sm-4 align-self-center">
                         <div className="text-center">
-                            <button className="btn btn-social-icon btn-google" href="http://google.com/+"><i
-    className="fa fa-google-plus"/></button>
-                            <button className="btn btn-social-icon btn-facebook"
-                               href="http://www.facebook.com/profile.php?id="><i className="fa fa-facebook"/></button>
-                            <button className="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com/in/"><i
-    className="fa fa-linkedin"/></button>
-                            <button className="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
-    className="fa fa-twitter"/></button>
-                            <button className="btn btn-social-icon btn-google" href="http://youtube.com/"><i
-    className="fa fa-youtube"/></button>
-                            <button className="btn btn-social-icon" href="mailto:"><i className="fa fa-envelope-o"/></button>
+                            <button aria-label="gplus" className="btn btn-social-icon btn-google" href="http://google.com/+">
+                                <i className="fa fa-google-plus" />
+                            </button>
+                            <button aria-label="facebook" className="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id=">
+                                <i className="fa fa-facebook" />
+                            </button>
+                            <button aria-label="linkedin" className="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com/in/">
+                                <i className="fa fa-linkedin" />
+                            </button>
+                            <button aria-label="twitter" className="btn btn-social-icon btn-twitter" href="http://twitter.com/">
+                                <i className="fa fa-twitter" />
+                            </button>
+                            <button aria-label="youtube" className="btn btn-social-icon btn-google" href="http://youtube.com/">
+                                <i className="fa fa-youtube" />
+                            </button>
+                            <button aria-label="email" className="btn btn-social-icon" href="mailto:">
+                                <i className="fa fa-envelope-o" />
+                            </button>
                         </div>
                     </div>
                 </div>

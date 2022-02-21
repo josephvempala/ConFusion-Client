@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {Breadcrumb, BreadcrumbItem, Button, Media} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {baseUrl} from '../shared/baseUrl';
@@ -10,13 +10,13 @@ function RenderMenuItem({dish, deleteFavorite}) {
     return (
         <Media tag="li">
             <Media left middle>
-                <Media height="200px" width="200px" object src={baseUrl + dish.image} alt={dish.name}/>
+                <Media height="200px" width="200px" object src={baseUrl + dish.image} alt={dish.name} />
             </Media>
             <Media body className="ml-5">
                 <Media heading>{dish.name}</Media>
                 <p>{dish.description}</p>
                 <Button outline color="danger" onClick={() => deleteFavorite(dish._id)}>
-                    <span className="fa fa-times"/>
+                    <span className="fa fa-times" />
                 </Button>
             </Media>
         </Media>
@@ -29,21 +29,19 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-    favorites : state.favorites
-})
+    favorites: state.favorites,
+});
 
 const Favorites = ({fetchFavorites, deleteFavorite, favorites}) => {
-
-    useEffect(()=>{
-        if(!favorites.favorites)
-            fetchFavorites();
-    },[fetchFavorites, favorites.favorites]);
+    useEffect(() => {
+        if (!favorites.favorites) fetchFavorites();
+    }, [fetchFavorites, favorites.favorites]);
 
     if (favorites.isLoading) {
         return (
             <div className="container">
                 <div className="row">
-                    <Loading/>
+                    <Loading />
                 </div>
             </div>
         );
@@ -54,13 +52,12 @@ const Favorites = ({fetchFavorites, deleteFavorite, favorites}) => {
                     <h4>{favorites.errMess}</h4>
                 </div>
             </div>
-        )
+        );
     } else if (favorites.favorites) {
-
         const favoriteItems = favorites.favorites.dishes.map((dish) => {
             return (
                 <div key={dish._id} className="col-12 mb-3">
-                    <RenderMenuItem dish={dish} deleteFavorite={deleteFavorite}/>
+                    <RenderMenuItem dish={dish} deleteFavorite={deleteFavorite} />
                 </div>
             );
         });
@@ -69,24 +66,24 @@ const Favorites = ({fetchFavorites, deleteFavorite, favorites}) => {
             <div className="container">
                 <div className="row">
                     <Breadcrumb>
-                        <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
+                        <BreadcrumbItem>
+                            <Link to="/home">Home</Link>
+                        </BreadcrumbItem>
                         <BreadcrumbItem active>My Favorites</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>My Favorites</h3>
-                        <hr/>
+                        <hr />
                     </div>
                 </div>
                 <div className="row">
-                    {favoriteItems.length > 0 ?
-                        <Media list>
-                            {favoriteItems}
-                        </Media>
-                        :
+                    {favoriteItems.length > 0 ? (
+                        <Media list>{favoriteItems}</Media>
+                    ) : (
                         <div className="col-3 col-sm-12 mt-3 mb-3">
-                            <h3>You have no favourites</h3>  
+                            <h3>You have no favourites</h3>
                         </div>
-                    }
+                    )}
                 </div>
             </div>
         );
@@ -97,8 +94,8 @@ const Favorites = ({fetchFavorites, deleteFavorite, favorites}) => {
                     <h4>You have no favorites</h4>
                 </div>
             </div>
-        )
+        );
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
