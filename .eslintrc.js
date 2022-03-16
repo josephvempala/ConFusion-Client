@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['plugin:prettier/recommended', 'plugin:react/recommended'],
+    extends: ['plugin:react/recommended'],
     parserOptions: {
         ecmaVersion: 2020,
         ecmaFeatures: {

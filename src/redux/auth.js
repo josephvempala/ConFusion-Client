@@ -8,6 +8,7 @@ export const Auth = (
         token: localStorage.getItem('token'),
         user: localStorage.getItem('creds') ? JSON.parse(localStorage.getItem('creds')) : null,
         errMess: null,
+        admin: (localStorage.getItem('admin') === 'true')
     },
     action,
 ) => {
@@ -27,6 +28,7 @@ export const Auth = (
                 isAuthenticated: true,
                 errMess: '',
                 token: action.token,
+                admin: action.admin
             };
         case ActionTypes.LOGIN_FAILURE:
             return {
@@ -48,6 +50,7 @@ export const Auth = (
                 isAuthenticated: false,
                 token: '',
                 user: null,
+                admin: null
             };
         case ActionTypes.REGISTER_REQUEST:
             return {

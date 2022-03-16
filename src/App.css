@@ -31,7 +31,6 @@ a:hover {
 }
 
 .removeTextDecor, .removeTextDecor:hover {
-    display: inline-block;
     padding: 5px;
     color: inherit;
 }
@@ -110,14 +109,15 @@ address {
 
 .dd-img {
     height: 410px;
-    width: 310px;
+    min-width: 310px;
+    max-width: 100%;
 }
 
 .dd-img,
 .card,
 .media,
 .media-object {
-    border-radius: 1em;
+    border-radius: 0.5em;
 }
 
 .error-floater {

@@ -10,6 +10,8 @@ import Footer from './Footer';
 import {Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
+    deleteDish,
+    deleteLeader,
     fetchComments,
     fetchDishes,
     fetchLeaders,
@@ -17,9 +19,11 @@ import {
     loginUser,
     logoutUser,
     postComment,
+    postDish,
     postFavorite,
     postFeedback,
-    registerUser,
+    postLeader,
+    registerUser
 } from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
@@ -54,6 +58,10 @@ const mapDispatchToProps = (dispatch) => ({
     logoutUser: () => dispatch(logoutUser()),
     postFavorite: (dishId) => dispatch(postFavorite(dishId)),
     registerUser: (creds) => dispatch(registerUser(creds)),
+    postDish: (file, title, description) => dispatch(postDish(file, title, description)),
+    deleteDish: (dishId) => dispatch(deleteDish(dishId)),
+    postLeader: (name, description, designation, file) => dispatch(postLeader(name, description, designation, file)),
+    deleteLeader: (leaderId) => dispatch(deleteLeader(leaderId))
 });
 
 function Main(props) {
@@ -82,7 +90,7 @@ function Main(props) {
     };
 
     const DishWithId = ({match}) => {
-        return <DishDetail dishId={match.params.dishId} />;
+        return <DishDetail dishId={match.params.dishId}/>;
     };
 
     const PrivateRoute = ({component: Component, isAuthenticated, ...rest}) => (
@@ -105,27 +113,36 @@ function Main(props) {
 
     return (
         <div className="full-viewport">
-            <Header auth={props.auth} loginUser={props.loginUser} logoutUser={props.logoutUser} registerUser={props.registerUser} />
+            <Header auth={props.auth} loginUser={props.loginUser} logoutUser={props.logoutUser}
+                registerUser={props.registerUser}/>
             <TransitionGroup>
                 <CSSTransition key={props.location.key} classNames="page" timeout={200}>
                     <div className="my-3">
                         <Switch>
-                            <Route path="/home" component={HomePage} />
-                            <Route exact path="/aboutus" component={() => <About leaders={props.leaders} />} />
-                            <Route exact path="/menu" component={() => <Menu dishes={props.dishes} />} />
-                            <Route path="/menu/:dishId" component={DishWithId} />
-                            <PrivateRoute exact path="/favorites" component={() => <Favorites />} isAuthenticated={props.auth.isAuthenticated} />
+                            <Route path="/home" component={HomePage}/>
+                            <Route exact path="/aboutus"
+                                component={() => <About auth={props.auth} postLeader={props.postLeader}
+                                    deleteLeader={props.deleteLeader}
+                                    leaders={props.leaders}/>}/>
+                            <Route exact path="/menu"
+                                component={() => <Menu dishes={props.dishes} postDish={props.postDish}
+                                    auth={props.auth}
+                                    deleteDish={props.deleteDish}/>}/>
+                            <Route path="/menu/:dishId" component={DishWithId}/>
+                            <PrivateRoute exact path="/favorites" component={() => <Favorites/>}
+                                isAuthenticated={props.auth.isAuthenticated}/>
                             <Route
                                 exact
                                 path="/contactus"
-                                component={() => <Contact resetFeedbackForm={props.resetFeedbackForm} postFeedback={props.postFeedback} />}
+                                component={() => <Contact resetFeedbackForm={props.resetFeedbackForm}
+                                    postFeedback={props.postFeedback}/>}
                             />
-                            <Redirect to="/home" />
+                            <Redirect to="/home"/>
                         </Switch>
                     </div>
                 </CSSTransition>
             </TransitionGroup>
-            <Footer />
+            <Footer/>
         </div>
     );
 }

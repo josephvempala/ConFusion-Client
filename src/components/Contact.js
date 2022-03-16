@@ -27,12 +27,12 @@ function Contact({postFeedback, resetFeedbackForm}) {
                 </Breadcrumb>
                 <div className="col-12">
                     <h3>Contact Us</h3>
-                    <hr />
+                    <hr/>
                 </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-sm-4 offset-sm-1">
-                    <Address />
+                    <Address/>
                 </div>
                 <div className="col-12 col-sm-6 offset-sm-1">
                     <h5>Map of our Location</h5>
@@ -46,13 +46,13 @@ function Contact({postFeedback, resetFeedbackForm}) {
                 <div className="col-12 col-sm-11 offset-sm-1">
                     <div className="btn-group" role="group">
                         <button className="btn btn-primary" href="tel:+85212345678">
-                            <i className="fa fa-phone" /> Call
+                            <i className="fa fa-phone"/> Call
                         </button>
                         <button className="btn btn-info">
-                            <i className="fa fa-skype" /> Skype
+                            <i className="fa fa-skype"/> Skype
                         </button>
                         <button className="btn btn-success" href="mailto:DiUdupi@food.net">
-                            <i className="fa fa-envelope-o" /> Email
+                            <i className="fa fa-envelope-o"/> Email
                         </button>
                     </div>
                 </div>
@@ -114,9 +114,9 @@ function Contact({postFeedback, resetFeedbackForm}) {
                                     model=".lastname"
                                     show="touched"
                                     messages={{
-                                        required: 'Required',
-                                        minLength: 'Must be greater than 2 characters',
-                                        maxLength: 'Must be 15 characters or less',
+                                        required: 'Required ',
+                                        minLength: 'Must be greater than 2 characters ',
+                                        maxLength: 'Must be 15 characters or less ',
                                     }}
                                 />
                             </Col>
@@ -134,8 +134,8 @@ function Contact({postFeedback, resetFeedbackForm}) {
                                     className="form-control"
                                     validators={{
                                         required,
-                                        minLength: minLength(3),
-                                        maxLength: maxLength(15),
+                                        minLength: minLength(9),
+                                        maxLength: maxLength(10),
                                         isNumber,
                                     }}
                                 />
@@ -144,10 +144,10 @@ function Contact({postFeedback, resetFeedbackForm}) {
                                     model=".telnum"
                                     show="touched"
                                     messages={{
-                                        required: 'Required',
-                                        minLength: 'Must be greater than 2 numbers',
-                                        maxLength: 'Must be 15 numbers or less',
-                                        isNumber: 'Must be a number',
+                                        required: 'Required ',
+                                        minLength: 'Must be greater than 2 numbers ',
+                                        maxLength: 'Must be 15 numbers or less ',
+                                        isNumber: 'Must be a number ',
                                     }}
                                 />
                             </Col>
@@ -173,8 +173,8 @@ function Contact({postFeedback, resetFeedbackForm}) {
                                     model=".email"
                                     show="touched"
                                     messages={{
-                                        required: 'Required',
-                                        validEmail: 'Invalid Email Address',
+                                        required: 'Required ',
+                                        validEmail: 'Invalid Email Address ',
                                     }}
                                 />
                             </Col>
@@ -183,7 +183,8 @@ function Contact({postFeedback, resetFeedbackForm}) {
                             <Col md={{size: 6, offset: 2}}>
                                 <div className="form-check">
                                     <Label check>
-                                        <Control.checkbox model=".agree" name="agree" className="form-check-input" />{' '}
+                                        <Control.checkbox model=".agree" name="agree"
+                                                          className="form-check-input"/>{' '}
                                         <strong>May we contact you?</strong>
                                     </Label>
                                 </div>
@@ -200,7 +201,8 @@ function Contact({postFeedback, resetFeedbackForm}) {
                                 Your Feedback
                             </Label>
                             <Col md={10}>
-                                <Control.textarea model=".message" id="message" name="message" rows="12" className="form-control" />
+                                <Control.textarea model=".message" id="message" name="message" rows="12"
+                                                  className="form-control"/>
                             </Col>
                         </Row>
                         <Row className="form-group">

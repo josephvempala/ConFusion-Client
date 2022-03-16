@@ -1,22 +1,35 @@
 import * as ActionTypes from './ActionTypes';
 import {baseUrl} from '../shared/baseUrl';
+import fetch from "cross-fetch";
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment,
 });
 
-export const postComment = (dishId, rating, comment) => (dispatch) => {
+export const deleteDish = (dishId) => async (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const deleteResponse = await fetch(baseUrl + 'dishes/' + dishId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: bearer
+        }
+    });
+    if (!deleteResponse.ok) {
+        alert('failed to delete');
+    }
+    dispatch(fetchDishes());
+};
+
+export const postComment = (dishId, rating, comment) => async (dispatch) => {
     const newComment = {
         dish: dishId,
         rating: rating,
         comment: comment,
     };
-    console.log('Comment ', newComment);
-
     const bearer = 'Bearer ' + localStorage.getItem('token');
-
-    return fetch(baseUrl + 'comments', {
+    const response = await fetch(baseUrl + 'comments', {
         method: 'POST',
         body: JSON.stringify(newComment),
         headers: {
@@ -24,50 +37,60 @@ export const postComment = (dishId, rating, comment) => (dispatch) => {
             Authorization: bearer,
         },
         credentials: 'same-origin',
-    })
-        .then(
-            (response) => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            (error) => {
-                throw new Error(error.message);
-            },
-        )
-        .then((response) => response.json())
-        .then((response) => dispatch(addComment(response)))
-        .catch((error) => {
-            console.log('Post comments ', error.message);
-            alert('Your comment could not be posted\nError: ' + error.message);
-        });
+    });
+    if (!response.ok) {
+        console.log(`${response.status}:${response.statusText}`);
+    }
+    const result = await response.json();
+    dispatch(addComment(result));
 };
 
-export const fetchDishes = () => (dispatch) => {
+export const fetchDishes = () => async (dispatch) => {
     dispatch(dishesLoading(true));
+    const response = await fetch(baseUrl + 'dishes');
+    if (!response.ok) {
+        dispatch(dishesFailed(`${response.status}:${response.statusText}`));
+    }
+    const result = await response.json();
+    dispatch(addDishes(result));
+};
 
-    return fetch(baseUrl + 'dishes')
-        .then(
-            (response) => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            (error) => {
-                throw new Error(error.message);
-            },
-        )
-        .then((response) => response.json())
-        .then((dishes) => dispatch(addDishes(dishes)))
-        .catch((error) => dispatch(dishesFailed(error.message)));
+export const postImage = async (file) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('imageFile', file);
+    const imageUploadResponse = await fetch(baseUrl + 'imageUpload', {
+        method: 'POST',
+        headers: {Authorization: bearer},
+        body: formData
+    });
+    if (!imageUploadResponse.ok) {
+        alert("error while trying to upload image");
+        return;
+    }
+    return '/images/' + (await imageUploadResponse.json()).originalname;
+};
+
+export const postDish = (file, title, description) => async (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const image = await postImage(file);
+    const dishUploadResponse = await fetch(baseUrl + 'dishes', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', Authorization: bearer},
+        body: JSON.stringify({
+            "name": title,
+            "image": image,
+            "category": "appetizer",
+            "label": "",
+            "price": "1.99",
+            "featured": false,
+            "description": description
+        })
+    });
+    if (!dishUploadResponse.ok) {
+        alert("error while trying to upload dish");
+    }
+    dispatch(fetchDishes());
 };
 
 export const dishesLoading = () => ({
@@ -84,25 +107,13 @@ export const addDishes = (dishes) => ({
     payload: dishes,
 });
 
-export const fetchComments = () => (dispatch) => {
-    return fetch(baseUrl + 'comments')
-        .then(
-            (response) => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            (error) => {
-                throw new Error(error.message);
-            },
-        )
-        .then((response) => response.json())
-        .then((comments) => dispatch(addComments(comments)))
-        .catch((error) => dispatch(commentsFailed(error.message)));
+export const fetchComments = () => async (dispatch) => {
+    const response = await fetch(baseUrl + 'comments');
+    if (!response.ok) {
+        dispatch(commentsFailed(`${response.status}:${response.statusText}`));
+    }
+    const result = await response.json();
+    dispatch(addComments(result));
 };
 
 export const commentsFailed = (errmess) => ({
@@ -115,27 +126,14 @@ export const addComments = (comments) => ({
     payload: comments,
 });
 
-export const fetchPromos = () => (dispatch) => {
+export const fetchPromos = () => async (dispatch) => {
     dispatch(promosLoading(true));
-
-    return fetch(baseUrl + 'promotions')
-        .then(
-            (response) => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            (error) => {
-                throw new Error(error.message);
-            },
-        )
-        .then((response) => response.json())
-        .then((promos) => dispatch(addPromos(promos)))
-        .catch((error) => dispatch(promosFailed(error.message)));
+    const response = await fetch(baseUrl + 'promotions');
+    if (!response.ok) {
+        dispatch(promosFailed(`${response.status}:${response.statusText}`));
+    }
+    const result = await response.json();
+    dispatch(addPromos(result));
 };
 
 export const promosLoading = () => ({
@@ -152,27 +150,14 @@ export const addPromos = (promos) => ({
     payload: promos,
 });
 
-export const fetchLeaders = () => (dispatch) => {
-    dispatch(leadersLoading());
-
-    return fetch(baseUrl + 'leaders')
-        .then(
-            (response) => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error('Error ' + response.status + ': ' + response.statusText);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            (error) => {
-                throw new Error(error.message);
-            },
-        )
-        .then((response) => response.json())
-        .then((leaders) => dispatch(addLeaders(leaders)))
-        .catch((error) => dispatch(leadersFailed(error.message)));
+export const fetchLeaders = () => async (dispatch) => {
+    dispatch(leadersLoading(true));
+    const response = await fetch(baseUrl + 'leaders');
+    if (!response.ok) {
+        dispatch(leadersFailed(`${response.status}:${response.statusText}`));
+    }
+    const result = await response.json();
+    dispatch(addLeaders(result));
 };
 
 export const leadersLoading = () => ({
@@ -234,6 +219,7 @@ export const receiveLogin = (response) => {
     return {
         type: ActionTypes.LOGIN_SUCCESS,
         token: response.token,
+        admin: response.admin
     };
 };
 
@@ -275,6 +261,7 @@ export const loginUser = (creds) => (dispatch) => {
             if (response.success) {
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('creds', JSON.stringify(creds));
+                localStorage.setItem('admin', response.admin);
                 dispatch(fetchFavorites());
                 dispatch(receiveLogin(response));
             } else {
@@ -302,6 +289,7 @@ export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout());
     localStorage.removeItem('token');
     localStorage.removeItem('creds');
+    localStorage.removeItem('admin');
     dispatch(favoritesFailed('Error 401: Unauthorized'));
     dispatch(receiveLogout());
 };
@@ -521,4 +509,39 @@ export const deleteComment = (commentId) => async (dispatch) => {
     } catch (e) {
         console.log(e);
     }
+};
+
+export const postLeader = (name, description, designation, file) => async (dispatch) => {
+    try {
+        const bearer = 'Bearer ' + localStorage.getItem('token');
+        const image = await postImage(file);
+        const body = JSON.stringify({name, image, designation, abbr: 'None', featured: false, description});
+        const response = await fetch(baseUrl + 'leaders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: bearer,
+            },
+            body,
+        });
+        if (!response.ok) return;
+        dispatch(fetchLeaders());
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const deleteLeader = (leaderId) => async (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const deleteResponse = await fetch(baseUrl + 'leaders/' + leaderId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: bearer
+        }
+    });
+    if (!deleteResponse.ok) {
+        alert('failed to delete');
+    }
+    dispatch(fetchLeaders());
 };
