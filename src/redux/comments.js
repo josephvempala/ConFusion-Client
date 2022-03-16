@@ -16,7 +16,7 @@ export const Comments = (
 
         case ActionTypes.ADD_COMMENT: {
             const comment = action.payload;
-            return {...state, comments: state.comments.concat(comment)};
+            return {...state, comments: [...state.comments, comment]};
         }
 
         case ActionTypes.EDIT_COMMENT: {

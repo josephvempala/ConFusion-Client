@@ -41,8 +41,7 @@ export const postComment = (dishId, rating, comment) => async (dispatch) => {
     if (!response.ok) {
         console.log(`${response.status}:${response.statusText}`);
     }
-    const result = await response.json();
-    dispatch(addComment(result));
+    dispatch(fetchComments());
 };
 
 export const fetchDishes = () => async (dispatch) => {
@@ -544,4 +543,34 @@ export const deleteLeader = (leaderId) => async (dispatch) => {
         alert('failed to delete');
     }
     dispatch(fetchLeaders());
+};
+
+export const addFeedback = (feedback) => {
+    return {
+        type: ActionTypes.ADD_FEEDBACKS,
+        payload: feedback
+    };
+};
+
+export const feedbackLoading = () => {
+    return {
+        type: ActionTypes.FEEDBACKS_LOADING,
+    };
+};
+
+export const fetchFeedback = () => async (dispatch) => {
+    dispatch(feedbackLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    const feedbackResponse = await fetch(baseUrl + 'leaders/' + leaderId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: bearer
+        }
+    });
+    if (!feedbackResponse.ok) {
+        alert('failed to fetch feedback');
+    }
+    const feedback = await feedbackResponse.json();
+    dispatch(addFeedback(feedback));
 };

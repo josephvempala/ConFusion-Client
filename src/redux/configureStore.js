@@ -8,6 +8,7 @@ import {favorites} from './favorites';
 import {Auth} from './auth';
 import thunk from 'redux-thunk';
 import {InitialFeedback} from './forms';
+import {Feedbacks} from "./feedback";
 
 export const ConfigureStore = () => {
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -18,6 +19,7 @@ export const ConfigureStore = () => {
             promotions: Promotions,
             leaders: Leaders,
             auth: Auth,
+            feedbacks: Feedbacks,
             favorites,
             ...createForms({
                 feedback: InitialFeedback,
