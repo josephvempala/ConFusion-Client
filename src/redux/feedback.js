@@ -4,7 +4,7 @@ export const Feedbacks = (
     state = {
         isLoading: true,
         errMess: null,
-        feedbacks: null,
+        feedbacks: [],
     },
     action,
 ) => {
@@ -13,10 +13,10 @@ export const Feedbacks = (
             return {...state, isLoading: false, errMess: null, feedbacks: action.payload};
 
         case ActionTypes.FEEDBACKS_LOADING:
-            return {...state, isLoading: true, errMess: null, feedbacks: null};
+            return {...state, isLoading: true, errMess: null, feedbacks: []};
 
         case ActionTypes.FEEDBACKS_FAILED:
-            return {...state, isLoading: false, errMess: action.payload, feedbacks: null};
+            return {...state, isLoading: false, errMess: action.payload, feedbacks: []};
 
         default:
             return state;

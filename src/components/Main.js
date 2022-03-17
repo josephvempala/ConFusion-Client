@@ -27,6 +27,7 @@ import {
 } from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import Feedback from "./feedback";
 
 const mapStateToProps = (state) => {
     return {
@@ -137,6 +138,8 @@ function Main(props) {
                                 component={() => <Contact resetFeedbackForm={props.resetFeedbackForm}
                                     postFeedback={props.postFeedback}/>}
                             />
+                            <PrivateRoute exact path="/feedback" component={() => <Feedback/>}
+                                isAuthenticated={props.auth.isAuthenticated}/>
                             <Redirect to="/home"/>
                         </Switch>
                     </div>

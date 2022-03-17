@@ -75,53 +75,60 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
 
     return (
         <>
-            <ErrorFloater message={auth.errMess} timeout={5000} />
+            <ErrorFloater message={auth.errMess} timeout={5000}/>
             <Navbar dark expand="md">
                 <Container>
-                    <NavbarToggler aria-label="navbar" onClick={toggleNav} />
+                    <NavbarToggler aria-label="navbar" onClick={toggleNav}/>
                     <Collapse isOpen={isNavOpen} navbar>
                         <Nav navbar>
                             <NavItem>
                                 <NavLink className="nav-link" to="/home">
-                                    <span className="fa fa-home fa-lg" /> Home
+                                    <span className="fa fa-home fa-lg"/> Home
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink className="nav-link" to="/aboutus">
-                                    <span className="fa fa-info fa-lg" /> About
+                                    <span className="fa fa-info fa-lg"/> About
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink className="nav-link" to="/menu">
-                                    <span className="fa fa-list fa-lg" /> Menu
+                                    <span className="fa fa-list fa-lg"/> Menu
                                 </NavLink>
                             </NavItem>
                             {auth.isAuthenticated && (
                                 <NavItem>
                                     <NavLink className="nav-link" to="/favorites">
-                                        <span className="fa fa-heart fa-lg" /> Favorites
+                                        <span className="fa fa-heart fa-lg"/> Favorites
                                     </NavLink>
                                 </NavItem>
                             )}
                             <NavItem>
                                 <NavLink className="nav-link" to="/contactus">
-                                    <span className="fa fa-address-card fa-lg" /> Contact
+                                    <span className="fa fa-address-card fa-lg"/> Contact
                                 </NavLink>
                             </NavItem>
+                            {auth.isAuthenticated && (
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/feedback">
+                                        <span className="fa fa-newspaper-o fa-lg"/> Feedback
+                                    </NavLink>
+                                </NavItem>
+                            )}
                         </Nav>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 {!auth.isAuthenticated ? (
                                     <Button className="loginbtn" outline onClick={toggleModal}>
-                                        <span className="fa fa-sign-in fa-lg" /> Login
-                                        {auth.isFetching ? <span className="fa fa-spinner fa-pulse fa-fw" /> : null}
+                                        <span className="fa fa-sign-in fa-lg"/> Login
+                                        {auth.isFetching ? <span className="fa fa-spinner fa-pulse fa-fw"/> : null}
                                     </Button>
                                 ) : (
                                     <div>
                                         <div className="navbar-text mr-3">{auth.user.username}</div>
                                         <Button className="loginbtn" outline onClick={handleLogout}>
-                                            <span className="fa fa-sign-out fa-lg" /> Logout
-                                            {auth.isFetching ? <span className="fa fa-spinner fa-pulse fa-fw" /> : null}
+                                            <span className="fa fa-sign-out fa-lg"/> Logout
+                                            {auth.isFetching ? <span className="fa fa-spinner fa-pulse fa-fw"/> : null}
                                         </Button>
                                     </div>
                                 )}
@@ -136,15 +143,15 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
                     <Form onSubmit={handleLogin}>
                         <FormGroup>
                             <Label htmlFor="username">Username</Label>
-                            <Input type="text" id="username" name="username" onChange={handleLoginFormInputChange} />
+                            <Input type="text" id="username" name="username" onChange={handleLoginFormInputChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="password">Password</Label>
-                            <Input type="password" id="password" name="password" onChange={handleLoginFormInputChange} />
+                            <Input type="password" id="password" name="password" onChange={handleLoginFormInputChange}/>
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" name="remember" onChange={handleLoginFormInputChange} />
+                                <Input type="checkbox" name="remember" onChange={handleLoginFormInputChange}/>
                                 Remember me
                             </Label>
                         </FormGroup>
@@ -152,7 +159,8 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
                             <Button type="submit" value="submit" color="primary">
                                 Login
                             </Button>
-                            <Button className="ml-auto " onClick={toggleRegisterModal} id="register" type="button" value="register" color="primary">
+                            <Button className="ml-auto " onClick={toggleRegisterModal} id="register" type="button"
+                                value="register" color="primary">
                                 Register
                             </Button>
                         </FormGroup>
@@ -165,19 +173,22 @@ function Header({registerUser, loginUser, logoutUser, auth}) {
                     <Form onSubmit={handleRegister}>
                         <FormGroup>
                             <Label htmlFor="username">Username</Label>
-                            <Input type="text" id="username" name="username" onChange={handleRegisterFormInputChange} />
+                            <Input type="text" id="username" name="username" onChange={handleRegisterFormInputChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="password">Password</Label>
-                            <Input type="password" id="password" name="password" onChange={handleRegisterFormInputChange} />
+                            <Input type="password" id="password" name="password"
+                                onChange={handleRegisterFormInputChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="firstname">First Name</Label>
-                            <Input type="text" id="firstname" name="firstname" onChange={handleRegisterFormInputChange} />
+                            <Input type="text" id="firstname" name="firstname"
+                                onChange={handleRegisterFormInputChange}/>
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="lastname">Last Name</Label>
-                            <Input type="lastname" id="lastname" name="lastname" onChange={handleRegisterFormInputChange} />
+                            <Input type="lastname" id="lastname" name="lastname"
+                                onChange={handleRegisterFormInputChange}/>
                         </FormGroup>
                         <Button type="submit" value="submit" color="primary">
                             Register

@@ -561,7 +561,7 @@ export const feedbackLoading = () => {
 export const fetchFeedback = () => async (dispatch) => {
     dispatch(feedbackLoading());
     const bearer = 'Bearer ' + localStorage.getItem('token');
-    const feedbackResponse = await fetch(baseUrl + 'leaders/' + leaderId, {
+    const feedbackResponse = await fetch(baseUrl + 'feedback/', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
