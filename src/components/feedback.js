@@ -36,7 +36,7 @@ function Feedback({feedbacks, fetchFeedbacks}) {
     else if (feedbacks.errMess) return <h1>{feedbacks.errMess}</h1>;
     else
         return (
-            <div className="container d-flex flex-column">
+            <div className="container">
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem>
@@ -45,7 +45,7 @@ function Feedback({feedbacks, fetchFeedbacks}) {
                         <BreadcrumbItem active>Feedback</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>Menu</h3>
+                        <h3>Feedbacks</h3>
                         <hr/>
                     </div>
                 </div>
